@@ -1,0 +1,9 @@
+# 不安装/升级 torch、torch_npu、CANN；沿用板载版本。
+# 在 --system-site-packages 的隔离 venv 中安装，实际解析版本由环境报告记录。
+transformers==4.51.3
+# 较新的 hub 会引入 hf-xet，在旧 aarch64/Python 环境可能触发 Rust 源码构建。
+huggingface-hub==0.30.2
+tokenizers==0.21.4
+safetensors==0.7.0
+# Transformers 检测到 NPU 时会导入其 attention 适配模块，即使选择 eager。
+einops==0.8.1

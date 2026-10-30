@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：设计与开发准备阶段。** 仓库包含设计文档、配置草案和部署辅助脚本，尚无可运行的推理引擎。板端兼容性与端到端性能需要后续验证。
+> **当前状态：M0 环境探测与 HF 单请求基线已实现。** 包含中文学习说明、环境报告、小模型测试和离线基准脚本；自研推理引擎尚未实现。完整模型数值正确性将在 M1 对拍验证。
 
 ## 项目目标
 
@@ -28,7 +28,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
 | 方案 | 可行性评审、首版范围、学习路线 | 已整理 |
-| A | 环境探测、模型加载、HF 基线 | 待实现与验证 |
+| A | 环境探测、模型加载、HF 基线 | 脚本已实现，见 M0 指南与实验记录 |
 | B | 手写前向、连续 KV、正确性对拍 | 待实现 |
 | C | 分页 KV、连续批处理、流式服务 | 待实现 |
 | D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
@@ -38,6 +38,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 
 ## 文档
 
+- [M0 环境探测与单请求基线](docs/M0环境与基线.md)：安装、运行、指标口径与代码阅读顺序。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
 - [原始技术设计](docs/技术设计文档.md)：详细架构与扩展设想，结合评审说明阅读；预估数字不是已实现成果。
 
@@ -47,8 +48,8 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 mini-llm-ascend/
 ├── vllm_shengteng/    引擎、缓存、服务及算子绑定的预留目录
 ├── ascendc/           自定义算子预留目录
-├── bench/            性能实验预留目录
-├── tests/            正确性测试预留目录
+├── bench/            环境探测与 HF 单请求基线
+├── tests/            计时边界、固定长度与提前 EOS 测试
 ├── configs/          配置草案，暂非可运行配置
 ├── scripts/          板端部署辅助脚本
 └── docs/             设计、评审与学习路线
@@ -56,7 +57,14 @@ mini-llm-ascend/
 
 ## 目标环境
 
-目标为香橙派 AIpro 8T / Ascend 310B4。既有环境记录为 CANN 8.1.RC1、Python 3.9.2、PyTorch 2.1.0 和板载 torch_npu 2.1.0.post2；后续将通过探测脚本生成可复现的环境记录与依赖锁定文件。
+目标为香橙派 AIpro 8T / Ascend 310B4。环境记录为 CANN 8.1.RC1、Python 3.9.2、PyTorch 2.1.0 和板载 torch_npu 2.1.0.post2。M0 使用隔离环境安装 `requirements-m0.txt` 中的模型加载依赖，探测脚本保存实际版本。
+
+```bash
+# 在仓库根目录，用已准备好的 Python 环境运行
+python -m bench.probe_env --device npu
+python -m bench.baseline --model /root/models/Qwen3-0.6B --device npu \
+  --max-new-tokens 8 --warmup 0 --runs 1
+```
 
 暂不直接升级板载软件栈。目标模型是 Qwen3-0.6B，模型权重不进入 Git。按模型配置计算，FP16 KV 为 112 KiB/token，block_size=16 时为 1.75 MiB/块；容量规划还需考虑激活、临时张量和共享系统内存。
 
