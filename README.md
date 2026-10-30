@@ -1,10 +1,12 @@
-# NanoServe-Ascend
+# vLLM-ShengTeng
 
 面向昇腾 310B4（香橙派 AIpro 8T）的手写轻量 LLM 推理引擎。
 
 **技术路线：混合栈** —— torch_npu 主引擎（调度/缓存/API）+ AscendC 原生 kernel（热点算子）。
 **目标模型：Qwen3-0.6B**（28 层 / hidden 1024 / GQA 16:8 / head_dim 128 / vocab 151936）
 
+> **命名说明**：项目名中的 "vLLM" 只表示**架构借鉴**（分页 KV cache + 连续批处理），本项目与 vLLM 官方无隶属关系、也不是其 fork，全部代码自研。
+>
 > 这不是 vLLM 的移植，而是一次受限平台上的系统设计练习：
 > 这块板子上**没有 PagedAttention 算子**（CANN 8.1 的 211 个 310B 算子中不存在，torch_npu / MindSpore 也没有），
 > 所以分页注意力必须自己写——先写 torch 版（gather + 掩码 dense），再写 AscendC kernel 版。
@@ -35,8 +37,8 @@
 ## 目录职责
 
 ```text
-nanoserve/                ← 仓库根
-├── nanoserve/            Python 包
+vllm_shenteng/                ← 仓库根
+├── vllm_shenteng/            Python 包
 │   ├── engine/           前向计算、调度器、采样
 │   ├── cache/            块管理、分页 KV、前缀哈希
 │   ├── api/              FastAPI / OpenAI 兼容 / SSE
@@ -73,7 +75,7 @@ source /usr/local/Ascend/ascend-toolkit/set_env.sh    # CANN 8.1.RC1
 git push board main
 ```
 
-板上 `/root/nanoserve` 会通过 `post-receive` 钩子自动 checkout 成工作副本，可版本化回滚。
+板上 `/root/vllm_shenteng` 会通过 `post-receive` 钩子自动 checkout 成工作副本，可版本化回滚。
 
 模型权重不进 git，放在板上 `/root/models/Qwen3-0.6B/`。
 

@@ -17,17 +17,19 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $env:SSH_ASKPASS = Join-Path $AskpassDir 'askpass.cmd'
 $env:SSH_ASKPASS_REQUIRE = 'force'
 $env:DISPLAY = 'localhost:0'
-$kh = Join-Path $AskpassDir 'known_hosts'
+# 注意：必须用正斜杠。反斜杠会被 git/ssh 的命令行解析吃掉
+# 导致 ssh 把 known_hosts 写到奇怪的文件名下
+$kh = (Join-Path $AskpassDir 'known_hosts') -replace '\\', '/'
 
 $sshCommon = "ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=$kh -o ConnectTimeout=8 -o LogLevel=ERROR"
 
 if ($Rsync) {
     $env:RSYNC_RSH = "$sshCommon -l root"
-    Write-Host "==> rsync 工作区 -> ${Board}:/root/nanoserve/" -ForegroundColor Cyan
+    Write-Host "==> rsync 工作区 -> ${Board}:/root/vllm_shenteng/" -ForegroundColor Cyan
     & rsync -az --delete `
         --exclude '.git/' --exclude '__pycache__/' --exclude '.model/' `
         --exclude '*.safetensors' --exclude 'build/' --exclude 'build_out/' `
-        "$repoRoot/" "${Board}:/root/nanoserve/"
+        "$repoRoot/" "${Board}:/root/vllm_shenteng/"
     if ($LASTEXITCODE -ne 0) { throw "rsync 失败 (exit $LASTEXITCODE)" }
 }
 else {
@@ -45,4 +47,4 @@ else {
     finally { Pop-Location }
 }
 
-Write-Host "==> 部署完成：板上工作区 /root/nanoserve" -ForegroundColor Green
+Write-Host "==> 部署完成：板上工作区 /root/vllm_shenteng" -ForegroundColor Green
