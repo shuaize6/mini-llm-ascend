@@ -1,0 +1,52 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 模型与权重（体积大，不入库）----
+.model/
+models/
+*.safetensors
+*.bin
+*.om
+*.ms
+*.onnx
+*.mindir
+*.ckpt
+
+# ---- CANN / AscendC 构建产物 ----
+*.run
+*.o
+*.a
+custom_opp_*/
+build_out/
+ascendc/op_kernel/*.gen
+ascendc/build/
+kernel_meta/
+
+# ---- 运行产物 ----
+logs/
+*.log
+profiling/
+*.json.gz
+out/
+results/
+
+# ---- 编辑器与系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# ---- 本地凭据 ----
+.env
+.ssh_probe/

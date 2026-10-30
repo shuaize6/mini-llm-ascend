@@ -1,0 +1,56 @@
+# Qwen3-0.6B 引擎配置（M0 阶段为规划值，实测后回填标 * 号项）
+model:
+  name: Qwen3-0.6B
+  path: /root/models/Qwen3-0.6B
+  dtype: float16            # checkpoint 为 bf16，加载时转换
+  num_layers: 28
+  hidden_size: 1024
+  num_attention_heads: 16
+  num_kv_heads: 8           # GQA 2:1
+  head_dim: 128
+  intermediate_size: 3072
+  vocab_size: 151936
+  rms_norm_eps: 1.0e-6
+  rope_theta: 1000000
+  tie_word_embeddings: true # 共享 lm_head 与 embed，省 311 MiB
+  has_qk_norm: true         # ★ Qwen3 特有：q_norm/k_norm 逐头 RMSNorm
+
+cache:
+  block_size: 16            # token/块 → 1.75 MiB/块（112 KiB/token）
+  num_blocks: 4681          # 约 8 GiB KV 池 → 74,896 token
+  enable_prefix_caching: true
+
+scheduler:
+  max_num_batched_tokens: 2048
+  max_num_seqs: 16
+  chunked_prefill: true
+  prefill_chunk_size: 512
+  decode_priority: true     # decode 优先，保证 TPOT 稳定
+
+sampling:
+  default_temperature: 0.7
+  default_top_p: 0.9
+  default_top_k: 20
+  greedy_fallback_on_cpu: true   # NPU 不支持时回退 CPU 采样
+
+speculative:
+  enabled: false
+  method: prompt_lookup     # prompt_lookup | draft_model
+  num_lookahead: 6
+  ngram_size: 3
+
+quantization:
+  method: none              # none | w8a16
+  group_size: null
+
+kernel:
+  mode: torch               # torch | ascendc | auto
+  enable_rms_norm_fusion: true
+  enable_rope_fusion: true
+  enable_prefill_fusion_attention: true
+
+runtime:
+  device: npu
+  kv_pool_gib: 8
+  request_timeout_s: 120
+  max_waiting: 64
