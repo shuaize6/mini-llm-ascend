@@ -1,86 +1,90 @@
-# vLLM-ShengTeng
+# mini-llm-ascend
 
-面向昇腾 310B4（香橙派 AIpro 8T）的手写轻量 LLM 推理引擎。
+面向昇腾 310B 的教学型轻量 LLM 推理引擎，围绕 **KV Cache、连续批处理与性能分析**逐步实现。
 
-**技术路线：混合栈** —— torch_npu 主引擎（调度/缓存/API）+ AscendC 原生 kernel（热点算子）。
-**目标模型：Qwen3-0.6B**（28 层 / hidden 1024 / GQA 16:8 / head_dim 128 / vocab 151936）
+An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **命名说明**：项目名中的 "vLLM" 只表示**架构借鉴**（分页 KV cache + 连续批处理），本项目与 vLLM 官方无隶属关系、也不是其 fork，全部代码自研。
->
-> 这不是 vLLM 的移植，而是一次受限平台上的系统设计练习：
-> 这块板子上**没有 PagedAttention 算子**（CANN 8.1 的 211 个 310B 算子中不存在，torch_npu / MindSpore 也没有），
-> 所以分页注意力必须自己写——先写 torch 版（gather + 掩码 dense），再写 AscendC kernel 版。
+> **当前状态：设计与开发准备阶段。** 仓库包含设计文档、配置草案和部署辅助脚本，尚无可运行的推理引擎。板端兼容性与端到端性能需要后续验证。
 
----
+## 项目目标
 
-## 状态
+- 从 Qwen3-0.6B 的单请求前向开始，理解 Prefill、Decode 和 KV Cache。
+- 实现分页 KV 管理、连续批处理、流式服务与请求取消回收。
+- 用同条件实验分析吞吐、延迟和内存，记录优化收益与代价。
+- 在 profiling 证据支持下，选择热点尝试 AscendC 自定义算子。
+
+项目借鉴 vLLM 等推理系统的公开设计，与 vLLM 官方无隶属关系。早期文档使用 `vLLM-ShengTeng` 名称；本地目录和预留 Python 包名暂保留 `vllm_shengteng`。
+
+## 学习方式
+
+英文标识符配中文解释，明确张量 shape、模块职责和状态变化。先实现易读的参考版本，再增加优化路径；每阶段配最小示例、必要测试和实验说明。
+
+阅读与实现顺序：
+
+`模型前向 → 连续 KV → 块管理 → 分页注意力参考实现 → 调度器 → 服务 → 性能分析 → 算子优化`
+
+## 路线与进度
 
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
-| 设计 | 技术设计文档 v0.2 | ✅ 完成 |
-| M0 | 环境标定 + 模型部署 + HF 基线 | ⬜ 未开始 |
-| M1 | 手写 forward（含 q/k-norm）+ KV cache | ⬜ |
-| M2 | PagedAttention（torch 版） | ⬜ |
-| M3 | Continuous Batching + Chunked Prefill | ⬜ |
-| M4 | OpenAI 兼容 API + 流式 + 指标 | ⬜ |
-| M5 | 框架层算子融合 + 消融 | ⬜ |
-| M6 | Prefix Caching | ⬜ |
-| M7 | 投机解码（prompt-lookup） | ⬜ |
-| M8 | W8A16 量化 | ⬜ |
-| M9 | 报告与复现 | ⬜ |
-| M10 | AscendC 原生 kernel（冲刺） | ⬜ |
+| 方案 | 可行性评审、首版范围、学习路线 | 已整理 |
+| A | 环境探测、模型加载、HF 基线 | 待实现与验证 |
+| B | 手写前向、连续 KV、正确性对拍 | 待实现 |
+| C | 分页 KV、连续批处理、流式服务 | 待实现 |
+| D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
+| E | 性能报告与复现指南 | 待实验 |
+
+投机解码、W8A16 和完整 PagedAttention kernel 为扩展方向，不作为首版交付前提。gather + dense 注意力用于验证分页 KV 管理，其性能需要实测。
 
 ## 文档
 
-- [技术设计文档](docs/技术设计文档.md) —— 架构、关键设计、内存/性能模型、里程碑、风险登记册
+- [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
+- [原始技术设计](docs/技术设计文档.md)：详细架构与扩展设想，结合评审说明阅读；预估数字不是已实现成果。
 
-## 目录职责
+## 目录
 
 ```text
-vllm_shengteng/                ← 仓库根
-├── vllm_shengteng/            Python 包
-│   ├── engine/           前向计算、调度器、采样
-│   ├── cache/            块管理、分页 KV、前缀哈希
-│   ├── api/              FastAPI / OpenAI 兼容 / SSE
-│   ├── ops/              自定义算子绑定（pybind11 → aclnn）
-│   └── utils/            配置、计时、日志
-├── ascendc/              AscendC 算子工程（op_host tiling + op_kernel）
-├── bench/                基准与消融脚本
-├── tests/                单测与对拍
-├── configs/              模型/引擎配置
-├── scripts/              部署与板端初始化
-└── docs/                 设计文档
+mini-llm-ascend/
+├── vllm_shengteng/    引擎、缓存、服务及算子绑定的预留目录
+├── ascendc/           自定义算子预留目录
+├── bench/            性能实验预留目录
+├── tests/            正确性测试预留目录
+├── configs/          配置草案，暂非可运行配置
+├── scripts/          板端部署辅助脚本
+└── docs/             设计、评审与学习路线
 ```
 
-## 环境（板上）
+## 目标环境
+
+目标为香橙派 AIpro 8T / Ascend 310B4。既有环境记录为 CANN 8.1.RC1、Python 3.9.2、PyTorch 2.1.0 和板载 torch_npu 2.1.0.post2；后续将通过探测脚本生成可复现的环境记录与依赖锁定文件。
+
+暂不直接升级板载软件栈。目标模型是 Qwen3-0.6B，模型权重不进入 Git。按模型配置计算，FP16 KV 为 112 KiB/token，block_size=16 时为 1.75 MiB/块；容量规划还需考虑激活、临时张量和共享系统内存。
+
+## 板端部署辅助
+
+脚本只用于同步源码，不会安装依赖或启动推理服务。首次使用前阅读脚本并检查目标目录。
+
+当前 `board_init.sh` 面向开发板的 `/root/vllm_shengteng` 工作目录，会安装自动 checkout 的接收钩子；请勿在该目录存放需要保留的未提交代码。
 
 ```bash
-source /usr/local/Ascend/ascend-toolkit/set_env.sh    # CANN 8.1.RC1
-/usr/local/miniconda3/bin/python                      # Python 3.9.2 + torch 2.1.0 + torch_npu 2.1.0.post2
+# 开发板：首次初始化裸仓库与接收钩子
+bash scripts/board_init.sh
 ```
-
-| 项 | 值 |
-| --- | --- |
-| 芯片 | Ascend 310B4，16 GB 内存（与 NPU 共享） |
-| 算力实测 | ≈1.55 TFLOPS fp16（1024³ matmul，722 次/秒） |
-| 模型权重 | Qwen3-0.6B，fp16 唯一参数 ≈1.11 GiB |
-| KV 开销 | 112 KiB/token（block=16 时 1.75 MiB/块） |
-
-## 开发与部署
-
-**唯一真源是本仓库（笔记本）**，板子是部署目标：
 
 ```powershell
-# 笔记本：提交并推送到板上（首次需先跑 board_init.sh）
-git push board main
+# 本机：将占位地址替换为自己的开发板地址，使用本机 SSH 配置认证
+ git remote add board root@YOUR_BOARD_HOST:/root/vllm_shengteng.git
+ git push board main
+
+# 后续也可使用辅助脚本
+.\scripts\deploy.ps1
 ```
 
-板上 `/root/vllm_shengteng` 会通过 `post-receive` 钩子自动 checkout 成工作副本，可版本化回滚。
+GitHub 远端 `origin` 与部署远端 `board` 各自独立。凭据、模型与设备私有配置不应提交到仓库。
 
-模型权重不进 git，放在板上 `/root/models/Qwen3-0.6B/`。
+## 参考资料
 
-## 约束（重要）
-
-- Python 3.9 与 torch 2.1.0 / torch_npu 2.1.0.post2 **不可升级**（310B 只有这一个可用轮子）。
-- 板子无法访问 HuggingFace / ModelScope / GitHub / 华为 OBS；依赖与权重需在笔记本代理下载后传输。
-- `npu_prompt_flash_attention` 在 310B 上不可用；`npu_rms_norm` / `npu_rotary_mul` / `npu_fusion_attention` 可用。
+- [vLLM / PagedAttention 论文](https://arxiv.org/abs/2309.06180)
+- [Qwen3-0.6B 官方模型](https://huggingface.co/Qwen/Qwen3-0.6B)
+- [vLLM-Ascend](https://github.com/vllm-project/vllm-ascend)
+- [昇腾文档中心](https://www.hiascend.com/document)

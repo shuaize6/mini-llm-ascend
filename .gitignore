@@ -49,4 +49,9 @@ Thumbs.db
 
 # ---- 本地凭据 ----
 .env
+.env.*
+!.env.example
 .ssh_probe/
+*.pem
+*.key
+.deployed_commit
