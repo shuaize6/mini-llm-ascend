@@ -37,8 +37,8 @@
 ## 目录职责
 
 ```text
-vllm_shenteng/                ← 仓库根
-├── vllm_shenteng/            Python 包
+vllm_shengteng/                ← 仓库根
+├── vllm_shengteng/            Python 包
 │   ├── engine/           前向计算、调度器、采样
 │   ├── cache/            块管理、分页 KV、前缀哈希
 │   ├── api/              FastAPI / OpenAI 兼容 / SSE
@@ -75,7 +75,7 @@ source /usr/local/Ascend/ascend-toolkit/set_env.sh    # CANN 8.1.RC1
 git push board main
 ```
 
-板上 `/root/vllm_shenteng` 会通过 `post-receive` 钩子自动 checkout 成工作副本，可版本化回滚。
+板上 `/root/vllm_shengteng` 会通过 `post-receive` 钩子自动 checkout 成工作副本，可版本化回滚。
 
 模型权重不进 git，放在板上 `/root/models/Qwen3-0.6B/`。
 

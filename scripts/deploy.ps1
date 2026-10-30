@@ -25,11 +25,11 @@ $sshCommon = "ssh -o PreferredAuthentications=password -o PubkeyAuthentication=n
 
 if ($Rsync) {
     $env:RSYNC_RSH = "$sshCommon -l root"
-    Write-Host "==> rsync 工作区 -> ${Board}:/root/vllm_shenteng/" -ForegroundColor Cyan
+    Write-Host "==> rsync 工作区 -> ${Board}:/root/vllm_shengteng/" -ForegroundColor Cyan
     & rsync -az --delete `
         --exclude '.git/' --exclude '__pycache__/' --exclude '.model/' `
         --exclude '*.safetensors' --exclude 'build/' --exclude 'build_out/' `
-        "$repoRoot/" "${Board}:/root/vllm_shenteng/"
+        "$repoRoot/" "${Board}:/root/vllm_shengteng/"
     if ($LASTEXITCODE -ne 0) { throw "rsync 失败 (exit $LASTEXITCODE)" }
 }
 else {
@@ -47,4 +47,4 @@ else {
     finally { Pop-Location }
 }
 
-Write-Host "==> 部署完成：板上工作区 /root/vllm_shenteng" -ForegroundColor Green
+Write-Host "==> 部署完成：板上工作区 /root/vllm_shengteng" -ForegroundColor Green

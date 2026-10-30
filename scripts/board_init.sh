@@ -3,8 +3,8 @@
 # 用法（板子上执行一次）：bash scripts/board_init.sh
 set -e
 
-BARE=/root/vllm_shenteng.git
-WORK=/root/vllm_shenteng
+BARE=/root/vllm_shengteng.git
+WORK=/root/vllm_shengteng
 BRANCH=main
 
 echo "==> 创建裸库 $BARE"
@@ -17,8 +17,8 @@ echo "==> 安装 post-receive 钩子"
 cat > "$BARE/hooks/post-receive" <<'HOOK'
 #!/bin/bash
 set -e
-GIT_DIR=/root/vllm_shenteng.git
-WORK_TREE=/root/vllm_shenteng
+GIT_DIR=/root/vllm_shengteng.git
+WORK_TREE=/root/vllm_shengteng
 BRANCH=main
 
 mkdir -p "$WORK_TREE"
