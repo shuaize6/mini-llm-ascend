@@ -116,6 +116,8 @@ def benchmark(args, report):
     report["dtype"] = str(dtype)
     report["model_manifest"] = model_manifest(model_path)
     report["model_config"] = config
+    report["stage"] = "loading_model"
+    write_report(args.output, report)
 
     # 不用 device_map='auto'，避免自动卸载或设备切换污染基线。
     print("开始离线加载 tokenizer 和 Qwen3；首次搬运可能较慢。", flush=True)
@@ -154,6 +156,8 @@ def benchmark(args, report):
     )
     report["generation_config"] = generation_config.to_dict()
     report["use_model_defaults"] = False
+    report["stage"] = "warmup"
+    write_report(args.output, report)
     print("模型已加载：{} 个输入 token；开始预热。".format(prompt_tokens), flush=True)
     for _ in range(args.warmup):
         run_once(model, inputs, generation_config, torch, device)
@@ -164,6 +168,8 @@ def benchmark(args, report):
             report["memory_reset_error"] = str(exc)
     report["runs"] = []
     for index in range(args.runs):
+        report["stage"] = "measuring_run_{}".format(index + 1)
+        write_report(args.output, report)
         result = run_once(model, inputs, generation_config, torch, device)
         if args.fixed_length and result["output_tokens"] != args.max_new_tokens:
             raise RuntimeError("固定长度实验未生成指定数量的 token。")
@@ -214,15 +220,23 @@ def main():
               "timing_scope": "HF generate + host token observation; excludes load, tokenize, input transfer, text decode",
               "warnings": ["Greedy is a reproducibility setting, not a Qwen quality recommendation.",
                            "Small samples do not establish P99 latency; CPU is not an NPU performance baseline."]}
+    write_report(args.output, report)
+    exit_code = 0
     try:
         benchmark(args, report)
         report["status"] = "ok"
+        report["stage"] = "complete"
+    except KeyboardInterrupt:
+        report["status"] = "interrupted"
+        report["error"] = "用户中断；未完成的样本不作为性能结果。"
+        exit_code = 130
     except Exception as exc:
         report["status"] = "error"
         report["error"] = "{}: {}".format(type(exc).__name__, exc)
         print(report["error"])
+        exit_code = 1
     write_report(args.output, report)
-    return 0 if report["status"] == "ok" else 1
+    return exit_code
 
 
 if __name__ == "__main__":
