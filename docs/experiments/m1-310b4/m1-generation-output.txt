@@ -1,0 +1,10 @@
+报告已保存：results/m1-generation.json
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/m1-generation.json
+报告已保存：results/m1-generation.json
+[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+../root/mini-llm-ascend/results/m1-validation/mini_llm_ascend/engine/sampler.py:23: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores[list(sorted(eos_ids))] = -float("inf")
+...................KV缓存是一种用于存储和检索
+报告已保存：results/m1-generation.json

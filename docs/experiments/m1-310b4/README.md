@@ -18,6 +18,19 @@
 
 这里的零误差只描述当前短案例、相同设备和 dtype，不是跨设备或任意输入的保证。
 
+## 测试集与实际启动命令
+
+[开发板测试日志](unit-tests.txt) 记录全部 27 项测试通过，包括原有 M0 的 7 项和 M1 新增的 20 项。日志中故障注入测试会主动生成 `error/interrupted` 报告，最终套件结果仍为 `OK`，不要把这些预期测试输出误认成运行失败。
+
+[自研生成报告](m1-generation.json) 与 [启动日志](m1-generation-output.txt) 验证了实际入口：
+
+```bash
+python -m bench.m1 --model ./models/Qwen3-0.6B --device npu \
+  --max-new-tokens 8 --fixed-length --output results/m1-generation.json
+```
+
+实际输出 8 个 token，文本为“KV缓存是一种用于存储和检索”，IDs 与 [M0 已归档的 HF 8-token 基线](../m0-310b4/qwen3-npu.json) 相同。这是独立启动验证，不是重新运行的一组性能对照实验。命令未单独预热，编译缓存又受到此前运行影响，因此其计时既不代表稳定性能，也不是严格干净的冷启动测量。
+
 ## 实验口径
 
 - 对拍使用相同权重、tokenizer、无 thinking 聊天模板、输入 IDs、计算 dtype 和 greedy/EOS 约束。
@@ -54,5 +67,7 @@ CPU 实验在 Windows 的隔离环境运行，Python 3.11、torch 2.11.0+cu126�
 ## 来源与限制
 
 开发时的 NPU 验证先在临时源码副本运行，之后改到项目内 `results/m1-validation/`。历史报告中的执行路径保持原样；这些运行发生在提交前，不能只凭 `git_commit` 判断实际源码，必须同时检查 `provenance.source_sha256`。日常运行请使用项目根目录及 [M1 运行指南](../../M1运行与学习指南.md)。
+
+最终 NPU 对拍、CPU 控制组/另一 prompt 验证及 8-token 生成报告的源码指纹，已逐文件核对，与实现提交 `83ddd67` 的 Git 文件内容一致。修复前部分报告对应旧实现，刻意保留其旧指纹，不能用它代表最终代码。
 
 本阶段范围是单请求、无 padding、连续 KV 和 greedy。短输入对拍不能证明长上下文、并发、分页缓存、随机采样或不同设备间完全一致。NPU 的 CPU fallback、storage_offset 等后端告警需要随日志保留；同设备 HF 一致性也不能替代与高精度跨设备参考的完整精度验证。
