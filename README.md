@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：M0 基线、M1 前向与 M2 共享分页 KV 已实现。** M2 通过 7 项新增针对性测试及 310B4 短输入对拍；本轮连续 KV 为 7.29 token/s、分页 gather 为 7.00 token/s，没有单请求加速证据。调度器、服务和原生分页 attention kernel 尚未实现。
+> **当前状态：M0 基线、M1 前向与 M2 共享分页 KV 已实现。** M2 通过 7 项新增针对性测试及 310B4 短输入对拍；后续 32-token 输出、20 对交替测量中，连续 KV 平均 7.28 token/s、分页 gather 平均 7.07 token/s，分页低约 2.91%，没有单请求加速证据。调度器、服务和原生分页 attention kernel 尚未实现。
 
 ## 项目目标
 
@@ -48,6 +48,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 - [M2 代码设计与原理](docs/M2代码设计与原理.md)：块表、事务写入、gather、内存口径与逐函数阅读。
 - [M2 运行与学习指南](docs/M2运行与学习指南.md)：B=4 小例子、7 项针对性测试及一次板端验证命令。
 - [M2 验证与性能](docs/experiments/m2-310b4/README.md)：不连续块对拍、同进程 M1/M2 比较、块复用与实际预留内存的区别。
+- [M2 扩大样本吞吐](docs/experiments/m2-310b4/扩大样本吞吐.md)：32-token 输出、20 对交替测量、波动范围及首次编译成本。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。

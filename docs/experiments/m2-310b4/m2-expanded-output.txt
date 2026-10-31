@@ -1,0 +1,273 @@
+报告已保存：results/m2-expanded.json
+setup
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/m2-expanded.json
+hashing_model
+报告已保存：results/m2-expanded.json
+loading_model
+报告已保存：results/m2-expanded.json
+validating_noncontiguous_blocks
+[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+../root/mini-llm-ascend/mini_llm_ascend/engine/sampler.py:23: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores[list(sorted(eos_ids))] = -float("inf")
+..报告已保存：results/m2-expanded.json
+validation_complete
+报告已保存：results/m2-expanded.json
+contiguous_warmup_1
+..................................................................................................................................................报告已保存：results/m2-expanded.json
+contiguous_warmup_1_done
+报告已保存：results/m2-expanded.json
+contiguous_warmup_2
+报告已保存：results/m2-expanded.json
+contiguous_warmup_2_done
+报告已保存：results/m2-expanded.json
+paged_warmup_1
+......................................报告已保存：results/m2-expanded.json
+paged_warmup_1_done
+报告已保存：results/m2-expanded.json
+paged_warmup_2
+报告已保存：results/m2-expanded.json
+paged_warmup_2_done
+报告已保存：results/m2-expanded.json
+contiguous_run_1
+报告已保存：results/m2-expanded.json
+contiguous_run_1_done
+contiguous 样本 1：7.209 token/s
+报告已保存：results/m2-expanded.json
+paged_run_1
+报告已保存：results/m2-expanded.json
+paged_run_1_done
+paged 样本 1：7.008 token/s
+报告已保存：results/m2-expanded.json
+pair_1_complete
+报告已保存：results/m2-expanded.json
+paged_run_2
+报告已保存：results/m2-expanded.json
+paged_run_2_done
+paged 样本 2：6.943 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_2
+报告已保存：results/m2-expanded.json
+contiguous_run_2_done
+contiguous 样本 2：7.411 token/s
+报告已保存：results/m2-expanded.json
+pair_2_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_3
+报告已保存：results/m2-expanded.json
+contiguous_run_3_done
+contiguous 样本 3：7.247 token/s
+报告已保存：results/m2-expanded.json
+paged_run_3
+报告已保存：results/m2-expanded.json
+paged_run_3_done
+paged 样本 3：7.134 token/s
+报告已保存：results/m2-expanded.json
+pair_3_complete
+报告已保存：results/m2-expanded.json
+paged_run_4
+报告已保存：results/m2-expanded.json
+paged_run_4_done
+paged 样本 4：7.145 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_4
+报告已保存：results/m2-expanded.json
+contiguous_run_4_done
+contiguous 样本 4：7.317 token/s
+报告已保存：results/m2-expanded.json
+pair_4_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_5
+报告已保存：results/m2-expanded.json
+contiguous_run_5_done
+contiguous 样本 5：7.274 token/s
+报告已保存：results/m2-expanded.json
+paged_run_5
+报告已保存：results/m2-expanded.json
+paged_run_5_done
+paged 样本 5：7.091 token/s
+报告已保存：results/m2-expanded.json
+pair_5_complete
+报告已保存：results/m2-expanded.json
+paged_run_6
+报告已保存：results/m2-expanded.json
+paged_run_6_done
+paged 样本 6：7.122 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_6
+报告已保存：results/m2-expanded.json
+contiguous_run_6_done
+contiguous 样本 6：7.271 token/s
+报告已保存：results/m2-expanded.json
+pair_6_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_7
+报告已保存：results/m2-expanded.json
+contiguous_run_7_done
+contiguous 样本 7：7.179 token/s
+报告已保存：results/m2-expanded.json
+paged_run_7
+报告已保存：results/m2-expanded.json
+paged_run_7_done
+paged 样本 7：7.016 token/s
+报告已保存：results/m2-expanded.json
+pair_7_complete
+报告已保存：results/m2-expanded.json
+paged_run_8
+报告已保存：results/m2-expanded.json
+paged_run_8_done
+paged 样本 8：7.164 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_8
+报告已保存：results/m2-expanded.json
+contiguous_run_8_done
+contiguous 样本 8：7.267 token/s
+报告已保存：results/m2-expanded.json
+pair_8_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_9
+报告已保存：results/m2-expanded.json
+contiguous_run_9_done
+contiguous 样本 9：7.321 token/s
+报告已保存：results/m2-expanded.json
+paged_run_9
+报告已保存：results/m2-expanded.json
+paged_run_9_done
+paged 样本 9：7.038 token/s
+报告已保存：results/m2-expanded.json
+pair_9_complete
+报告已保存：results/m2-expanded.json
+paged_run_10
+报告已保存：results/m2-expanded.json
+paged_run_10_done
+paged 样本 10：7.100 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_10
+报告已保存：results/m2-expanded.json
+contiguous_run_10_done
+contiguous 样本 10：7.261 token/s
+报告已保存：results/m2-expanded.json
+pair_10_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_11
+报告已保存：results/m2-expanded.json
+contiguous_run_11_done
+contiguous 样本 11：7.294 token/s
+报告已保存：results/m2-expanded.json
+paged_run_11
+报告已保存：results/m2-expanded.json
+paged_run_11_done
+paged 样本 11：7.068 token/s
+报告已保存：results/m2-expanded.json
+pair_11_complete
+报告已保存：results/m2-expanded.json
+paged_run_12
+报告已保存：results/m2-expanded.json
+paged_run_12_done
+paged 样本 12：7.069 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_12
+报告已保存：results/m2-expanded.json
+contiguous_run_12_done
+contiguous 样本 12：7.360 token/s
+报告已保存：results/m2-expanded.json
+pair_12_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_13
+报告已保存：results/m2-expanded.json
+contiguous_run_13_done
+contiguous 样本 13：7.356 token/s
+报告已保存：results/m2-expanded.json
+paged_run_13
+报告已保存：results/m2-expanded.json
+paged_run_13_done
+paged 样本 13：6.961 token/s
+报告已保存：results/m2-expanded.json
+pair_13_complete
+报告已保存：results/m2-expanded.json
+paged_run_14
+报告已保存：results/m2-expanded.json
+paged_run_14_done
+paged 样本 14：7.067 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_14
+报告已保存：results/m2-expanded.json
+contiguous_run_14_done
+contiguous 样本 14：7.185 token/s
+报告已保存：results/m2-expanded.json
+pair_14_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_15
+报告已保存：results/m2-expanded.json
+contiguous_run_15_done
+contiguous 样本 15：7.277 token/s
+报告已保存：results/m2-expanded.json
+paged_run_15
+报告已保存：results/m2-expanded.json
+paged_run_15_done
+paged 样本 15：7.027 token/s
+报告已保存：results/m2-expanded.json
+pair_15_complete
+报告已保存：results/m2-expanded.json
+paged_run_16
+报告已保存：results/m2-expanded.json
+paged_run_16_done
+paged 样本 16：7.030 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_16
+报告已保存：results/m2-expanded.json
+contiguous_run_16_done
+contiguous 样本 16：7.216 token/s
+报告已保存：results/m2-expanded.json
+pair_16_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_17
+报告已保存：results/m2-expanded.json
+contiguous_run_17_done
+contiguous 样本 17：7.389 token/s
+报告已保存：results/m2-expanded.json
+paged_run_17
+报告已保存：results/m2-expanded.json
+paged_run_17_done
+paged 样本 17：7.217 token/s
+报告已保存：results/m2-expanded.json
+pair_17_complete
+报告已保存：results/m2-expanded.json
+paged_run_18
+报告已保存：results/m2-expanded.json
+paged_run_18_done
+paged 样本 18：7.010 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_18
+报告已保存：results/m2-expanded.json
+contiguous_run_18_done
+contiguous 样本 18：7.121 token/s
+报告已保存：results/m2-expanded.json
+pair_18_complete
+报告已保存：results/m2-expanded.json
+contiguous_run_19
+报告已保存：results/m2-expanded.json
+contiguous_run_19_done
+contiguous 样本 19：7.375 token/s
+报告已保存：results/m2-expanded.json
+paged_run_19
+报告已保存：results/m2-expanded.json
+paged_run_19_done
+paged 样本 19：7.077 token/s
+报告已保存：results/m2-expanded.json
+pair_19_complete
+报告已保存：results/m2-expanded.json
+paged_run_20
+报告已保存：results/m2-expanded.json
+paged_run_20_done
+paged 样本 20：7.056 token/s
+报告已保存：results/m2-expanded.json
+contiguous_run_20
+报告已保存：results/m2-expanded.json
+contiguous_run_20_done
+contiguous 样本 20：7.252 token/s
+报告已保存：results/m2-expanded.json
+pair_20_complete
+KV缓存是一种用于存储和检索键值对（Key-Value Pair）的缓存机制，通常用于提高数据访问效率。它通过缓
+报告已保存：results/m2-expanded.json
