@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：M0 基线与 M1 自研单请求前向已实现。** M1 包含 Qwen3 前向、连续 KV Cache、greedy 生成和 HF 对拍工具。27 项测试通过；Qwen3-0.6B 在 310B4 FP16 的 21-token 输入、4-token 输出案例中，逐层/全位置 logits、缓存重算和输出 IDs 均通过验证。分页缓存、调度器和服务尚未实现。
+> **当前状态：M0 基线、M1 前向与 M2 共享分页 KV 已实现。** M2 通过 7 项新增针对性测试及 310B4 短输入对拍；本轮连续 KV 为 7.29 token/s、分页 gather 为 7.00 token/s，没有单请求加速证据。调度器、服务和原生分页 attention kernel 尚未实现。
 
 ## 项目目标
 
@@ -29,10 +29,11 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 | --- | --- | --- |
 | 方案 | 可行性评审、首版范围、学习路线 | 已整理 |
 | A / M0 | 环境探测、模型加载、HF 基线 | 已完成板端短请求初测，7 项 M0 测试通过 |
-| B / M1 | 手写前向、连续 KV、正确性对拍 | 已实现；总计 27 项测试、CPU 与 NPU 短输入验证通过 |
-| C | 分页 KV、连续批处理、流式服务 | 待实现 |
+| B / M1 | 手写前向、连续 KV、正确性对拍 | 已实现；该阶段累计 27 项测试、CPU 与 NPU 短输入验证通过 |
+| C / M2 | 共享分页 KV、块管理、gather 参考注意力 | 已实现；新增 7 项测试与一次板端数值/性能对照通过 |
+| C / 后续 | 连续批处理、流式服务 | 待实现 |
 | D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
-| E | 性能报告与复现指南 | 待实验 |
+| E | 性能报告与复现指南 | 已有短请求记录；长上下文与并发待实验 |
 
 投机解码、W8A16 和完整 PagedAttention kernel 为扩展方向，不作为首版交付前提。gather + dense 注意力用于验证分页 KV 管理，其性能需要实测。
 
@@ -40,10 +41,13 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 
 - [M0 环境探测与单请求基线](docs/M0环境与基线.md)：安装、运行、指标口径与代码阅读顺序。
 - [M0 代码设计与原理](docs/M0代码设计与原理.md)：逐函数说明、Prefill/Decode/KV Cache、张量形状、计时公式与 7 项测试解读。
-- [M1 运行与学习指南](docs/M1运行与学习指南.md)：进入/退出环境、启动自研生成、27 项测试、RoPE 探针与完整模型对拍。
+- [M1 运行与学习指南](docs/M1运行与学习指南.md)：进入/退出环境、启动自研生成、测试、RoPE 探针与完整模型对拍。
 - [M1 代码设计与原理](docs/M1代码设计与原理.md)：现有实现的逐函数说明、Qwen3 数学、缓存状态、生成循环与对拍原理。
 - [M1 正确性与排错记录](docs/experiments/m1-310b4/README.md)：NPU 逐层零误差短案例、RoPE 精度修复、CPU 舍入控制组及原始报告。
 - [M1 预热后性能](docs/experiments/m1-310b4/预热后性能.md)：21-token 输入、8-token 输出，预热 1 次后测量 3 次，平均 7.41 token/s；包含 TTFT、TPOT、内存和分页缓存收益的证据边界。
+- [M2 代码设计与原理](docs/M2代码设计与原理.md)：块表、事务写入、gather、内存口径与逐函数阅读。
+- [M2 运行与学习指南](docs/M2运行与学习指南.md)：B=4 小例子、7 项针对性测试及一次板端验证命令。
+- [M2 验证与性能](docs/experiments/m2-310b4/README.md)：不连续块对拍、同进程 M1/M2 比较、块复用与实际预留内存的区别。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
@@ -57,9 +61,9 @@ mini-llm-ascend/
 ├── .venv/            板端 Python 环境（不入库）
 ├── models/           模型权重（不入库）
 ├── results/          本地实验输出（不入库）
-├── mini_llm_ascend/   M1 前向、连续缓存与生成循环；服务/算子目录预留
+├── mini_llm_ascend/   前向、连续/分页 KV 与生成循环；服务/算子目录预留
 ├── ascendc/           自定义算子预留目录
-├── bench/            环境探测、HF 基线、M1 生成与对拍
+├── bench/            环境探测、HF 基线、M1/M2 生成与对拍、分页演示
 ├── tests/            M0 回归、模型数学、缓存状态、权重与生成测试
 ├── configs/          配置草案，暂非可运行配置
 ├── scripts/          板端部署辅助脚本

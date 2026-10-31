@@ -1,0 +1,55 @@
+{
+  "kind": "record of observed test execution; not a rerun",
+  "command": ".venv-m1\\Scripts\\python.exe -X utf8 -m unittest discover -s tests -p test_paged_kv.py -v",
+  "result": "OK",
+  "tests_run": 7,
+  "test_runner_elapsed_s": 0.101,
+  "scope": "CPU M2-specific tests only; no full M0/M1 suite rerun",
+  "environment": {
+    "recorded_at_utc": "2026-10-31T10:18:28.623323+00:00",
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Mar 11 2026, 17:12:15) [MSC v.1942 64 bit (AMD64)]",
+    "executable": "E:\\xiangcehngpai_shenteng\\vllm_shengteng\\.venv-m1\\Scripts\\python.exe",
+    "platform": "Windows-10-10.0.26100-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "torch": "2.11.0+cu126",
+      "torch-npu": null,
+      "transformers": "4.51.3",
+      "safetensors": "0.7.0",
+      "numpy": "2.4.4",
+      "tokenizers": "0.21.4",
+      "huggingface-hub": "0.30.2",
+      "einops": "0.8.1"
+    },
+    "compiler_environment": {
+      "MAX_COMPILE_CORE_NUMBER": null,
+      "TE_PARALLEL_COMPILER": null
+    },
+    "git_commit": {
+      "returncode": 0,
+      "stdout": "2f18d9762bf63f7d7d1f680a8bd5adee51ab149e",
+      "stderr": ""
+    },
+    "git_status": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "deployed_commit": null,
+    "benchmark_source_sha256": {
+      "bench\\__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench\\baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench\\common.py": "9fc7fb8234f7b40da9a398a2cfb974c7202944353fb3e4ba47cd0266aa9844c1",
+      "bench\\compare_m1.py": "155bda750630e3e78ef7f9c92fa04f981c84f5832085ae3a8c3e1d8615c8b4d2",
+      "bench\\demo_paged_kv.py": "4408e4c11983ff109c068d60a7d62f00a81fa7bb696431bc197a93f19587c37c",
+      "bench\\m1.py": "798920196caada6d64b30426841f4a616d3f8c2bdf9119afc597c70615138a69",
+      "bench\\m1_common.py": "72dfddc2de25a2afbfb2a17c056fd173df06a7b45b192962f0ef89a467d1dbb2",
+      "bench\\m2.py": "280787a149be3fc83c5f6da7ed7f17dc1d5552363c8c593518683de0de4361b3",
+      "bench\\probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920",
+      "bench\\probe_m1_rope.py": "7228482b1273ada0da3da9bbb865e0d08842abdfca100d3c28ac376d47c3249b"
+    }
+  },
+  "environment_note": "Environment snapshot captured after the observed test execution; implementation code was unchanged.",
+  "implementation_commit": "2f18d9762bf63f7d7d1f680a8bd5adee51ab149e",
+  "test_source_sha256": "0ae7f85ef2d2e298fa38cb4360965278824f5aca2f6554bbb578c41ff3d2d2b5"
+}
