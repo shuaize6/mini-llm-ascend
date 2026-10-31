@@ -23,7 +23,7 @@ git -C "$WORK" config receive.denyCurrentBranch updateInstead
 mkdir -p "$WORK/models" "$WORK/results"
 
 if [ ! -e "$WORK/.venv" ]; then
-    /usr/local/miniconda3/bin/python -m venv --system-site-packages "$WORK/.venv"
+    /usr/local/miniconda3/bin/python -m venv --system-site-packages --prompt "$(basename "$WORK")" "$WORK/.venv"
 fi
 
 echo "项目目录：$WORK"
