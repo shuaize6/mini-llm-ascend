@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "args": {
+    "model": "/root/models/Qwen3-0.6B",
+    "model_revision": "unknown-local-copy",
+    "device": "npu",
+    "dtype": null,
+    "prompt": "请用一句话解释什么是KV缓存。",
+    "max_new_tokens": 8,
+    "warmup": 1,
+    "runs": 3,
+    "seed": 0,
+    "fixed_length": true,
+    "output": "results/qwen3-npu.json"
+  },
+  "environment": {
+    "recorded_at_utc": "2026-10-30T14:33:00.950103+00:00",
+    "python": "3.9.2 | packaged by conda-forge | (default, Feb 21 2021, 05:02:26) \n[GCC 9.3.0]",
+    "executable": "/root/mini-llm-m0-venv/bin/python",
+    "platform": "Linux-5.10.0+-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "packages": {
+      "torch": "2.1.0",
+      "torch-npu": "2.1.0.post2+git64bdab5",
+      "transformers": "4.51.3",
+      "safetensors": "0.7.0",
+      "numpy": "1.22.4",
+      "tokenizers": "0.21.4",
+      "huggingface-hub": "0.30.2",
+      "einops": "0.8.1"
+    },
+    "git_commit": {
+      "returncode": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "git_status": {
+      "returncode": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "deployed_commit": "8e9009c54a0ea9064a2a786594dba028ac51472c",
+    "benchmark_source_sha256": {
+      "bench/__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench/baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench/common.py": "0d3d217474943c42604f47d9b9166f355823e81647dbb425a4e2457361e24a94",
+      "bench/probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920"
+    }
+  },
+  "batch_size": 1,
+  "timing_scope": "HF generate + host token observation; excludes load, tokenize, input transfer, text decode",
+  "warnings": [
+    "Greedy is a reproducibility setting, not a Qwen quality recommendation.",
+    "Small samples do not establish P99 latency; CPU is not an NPU performance baseline."
+  ],
+  "actual_device": "npu:0",
+  "dtype": "torch.float16",
+  "model_manifest": {
+    "files": {
+      "config.json": {
+        "size_bytes": 726,
+        "sha256": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd"
+      },
+      "generation_config.json": {
+        "size_bytes": 239,
+        "sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2"
+      },
+      "merges.txt": {
+        "size_bytes": 1671853
+      },
+      "model.safetensors": {
+        "size_bytes": 1503300328
+      },
+      "tokenizer.json": {
+        "size_bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      "tokenizer_config.json": {
+        "size_bytes": 9732,
+        "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101"
+      },
+      "vocab.json": {
+        "size_bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    },
+    "weight_sha256": "not computed; use --model-revision to record provenance"
+  },
+  "model_config": {
+    "architectures": [
+      "Qwen3ForCausalLM"
+    ],
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "bos_token_id": 151643,
+    "eos_token_id": 151645,
+    "head_dim": 128,
+    "hidden_act": "silu",
+    "hidden_size": 1024,
+    "initializer_range": 0.02,
+    "intermediate_size": 3072,
+    "max_position_embeddings": 40960,
+    "max_window_layers": 28,
+    "model_type": "qwen3",
+    "num_attention_heads": 16,
+    "num_hidden_layers": 28,
+    "num_key_value_heads": 8,
+    "rms_norm_eps": 1e-06,
+    "rope_scaling": null,
+    "rope_theta": 1000000,
+    "sliding_window": null,
+    "tie_word_embeddings": true,
+    "torch_dtype": "bfloat16",
+    "transformers_version": "4.51.0",
+    "use_cache": true,
+    "use_sliding_window": false,
+    "vocab_size": 151936
+  },
+  "stage": "complete",
+  "load_s": 5.033135443998617,
+  "input_ids": [
+    151644,
+    872,
+    198,
+    14880,
+    11622,
+    105321,
+    104136,
+    106582,
+    82707,
+    99982,
+    24360,
+    1773,
+    151645,
+    198,
+    151644,
+    77091,
+    198,
+    151667,
+    271,
+    151668,
+    271
+  ],
+  "prompt_tokens": 21,
+  "rendered_prompt": "<|im_start|>user\n请用一句话解释什么是KV缓存。<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "generation_config": {
+    "max_length": 20,
+    "max_new_tokens": 8,
+    "min_length": 0,
+    "min_new_tokens": 8,
+    "early_stopping": false,
+    "max_time": null,
+    "stop_strings": null,
+    "do_sample": false,
+    "num_beams": 1,
+    "num_beam_groups": 1,
+    "penalty_alpha": null,
+    "dola_layers": null,
+    "use_cache": true,
+    "cache_implementation": null,
+    "cache_config": null,
+    "return_legacy_cache": null,
+    "prefill_chunk_size": null,
+    "temperature": 1.0,
+    "top_k": 50,
+    "top_p": 1.0,
+    "min_p": null,
+    "typical_p": 1.0,
+    "epsilon_cutoff": 0.0,
+    "eta_cutoff": 0.0,
+    "diversity_penalty": 0.0,
+    "repetition_penalty": 1.0,
+    "encoder_repetition_penalty": 1.0,
+    "length_penalty": 1.0,
+    "no_repeat_ngram_size": 0,
+    "bad_words_ids": null,
+    "force_words_ids": null,
+    "renormalize_logits": false,
+    "constraints": null,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": false,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "forced_decoder_ids": null,
+    "sequence_bias": null,
+    "token_healing": false,
+    "guidance_scale": null,
+    "low_memory": null,
+    "watermarking_config": null,
+    "num_return_sequences": 1,
+    "output_attentions": false,
+    "output_hidden_states": false,
+    "output_scores": false,
+    "output_logits": null,
+    "return_dict_in_generate": false,
+    "pad_token_id": 151643,
+    "bos_token_id": 151643,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "encoder_no_repeat_ngram_size": 0,
+    "decoder_start_token_id": null,
+    "is_assistant": false,
+    "num_assistant_tokens": 20,
+    "num_assistant_tokens_schedule": "constant",
+    "assistant_confidence_threshold": 0.4,
+    "prompt_lookup_num_tokens": null,
+    "max_matching_ngram_size": null,
+    "assistant_early_exit": null,
+    "assistant_lookbehind": 10,
+    "target_lookbehind": 10,
+    "disable_compile": false,
+    "generation_kwargs": {},
+    "_from_model_config": false,
+    "transformers_version": "4.51.3"
+  },
+  "use_model_defaults": false,
+  "runs": [
+    {
+      "output_tokens": 8,
+      "generate_s": 1.2345284580005682,
+      "ttft_ms": 144.97493400267558,
+      "tpot_ms": 155.4307327138044,
+      "itl_ms": [
+        163.83968799709692,
+        159.58267300084117,
+        143.86425200063968,
+        155.67070299948682,
+        148.14862300045206,
+        164.07540000000154,
+        152.83378999811248
+      ],
+      "output_tokens_per_s": 6.480207036261223,
+      "finalization_ms": 1.5383950012619607,
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1192245760,
+        "memory_reserved_bytes": 1308622848,
+        "max_memory_allocated_bytes": 1200909312
+      }
+    },
+    {
+      "output_tokens": 8,
+      "generate_s": 1.2564563800006,
+      "ttft_ms": 165.2811460007797,
+      "tpot_ms": 155.66202457141895,
+      "itl_ms": [
+        149.08453099997132,
+        145.97811400017235,
+        167.7231159992516,
+        151.70883700193372,
+        144.32782099902397,
+        165.13383100027568,
+        165.6779219993041
+      ],
+      "output_tokens_per_s": 6.367113198148734,
+      "finalization_ms": 1.5410619998874608,
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1192245760,
+        "memory_reserved_bytes": 1308622848,
+        "max_memory_allocated_bytes": 1200909312
+      }
+    },
+    {
+      "output_tokens": 8,
+      "generate_s": 1.1882824400017853,
+      "ttft_ms": 153.08566800013068,
+      "tpot_ms": 147.6683900000353,
+      "itl_ms": [
+        148.22422799989,
+        147.8906400006963,
+        147.621406998951,
+        147.2153190006793,
+        147.3425699987274,
+        146.230367001408,
+        149.15419899989502
+      ],
+      "output_tokens_per_s": 6.732406144104916,
+      "finalization_ms": 1.5180420014075935,
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1192245760,
+        "memory_reserved_bytes": 1308622848,
+        "max_memory_allocated_bytes": 1200909312
+      }
+    }
+  ],
+  "summary": {
+    "ttft_ms": {
+      "mean": 154.44724933452866,
+      "median": 153.08566800013068
+    },
+    "tpot_ms": {
+      "mean": 152.92038242841954,
+      "median": 155.4307327138044
+    },
+    "generate_s": {
+      "mean": 1.2264224260009844,
+      "median": 1.2345284580005682
+    },
+    "output_tokens_per_s": {
+      "mean": 6.526575459504958,
+      "median": 6.480207036261223
+    },
+    "sample_count": 3,
+    "identical_output_ids": true
+  }
+}

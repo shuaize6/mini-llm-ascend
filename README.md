@@ -28,7 +28,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
 | 方案 | 可行性评审、首版范围、学习路线 | 已整理 |
-| A | 环境探测、模型加载、HF 基线 | 脚本已实现，见 M0 指南与实验记录 |
+| A | 环境探测、模型加载、HF 基线 | 已完成板端短请求初测，7 项测试通过 |
 | B | 手写前向、连续 KV、正确性对拍 | 待实现 |
 | C | 分页 KV、连续批处理、流式服务 | 待实现 |
 | D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
@@ -39,6 +39,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 ## 文档
 
 - [M0 环境探测与单请求基线](docs/M0环境与基线.md)：安装、运行、指标口径与代码阅读顺序。
+- [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
 - [原始技术设计](docs/技术设计文档.md)：详细架构与扩展设想，结合评审说明阅读；预估数字不是已实现成果。
 
@@ -63,7 +64,7 @@ mini-llm-ascend/
 # 在仓库根目录，用已准备好的 Python 环境运行
 python -m bench.probe_env --device npu
 python -m bench.baseline --model /root/models/Qwen3-0.6B --device npu \
-  --max-new-tokens 8 --warmup 0 --runs 1
+  --max-new-tokens 1 --warmup 0 --runs 1
 ```
 
 暂不直接升级板载软件栈。目标模型是 Qwen3-0.6B，模型权重不进入 Git。按模型配置计算，FP16 KV 为 112 KiB/token，block_size=16 时为 1.75 MiB/块；容量规划还需考虑激活、临时张量和共享系统内存。

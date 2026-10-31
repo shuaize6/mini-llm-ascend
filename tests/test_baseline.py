@@ -1,8 +1,13 @@
 """计时边界与真实 HF 生成的最小验证，不下载模型。"""
 
 import unittest
+import json
+import tempfile
+from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
+from bench import baseline
 from bench.baseline import TokenTimer, run_once, timing_metrics
 
 
@@ -12,6 +17,17 @@ class FakeToken:
 
 
 class TimingTests(unittest.TestCase):
+    def test_interrupt_saves_diagnostic_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = str(Path(directory) / "interrupted.json")
+            with patch.object(baseline, "parse_args", return_value=SimpleNamespace(output=output)):
+                with patch.object(baseline, "environment_info", return_value={}):
+                    with patch.object(baseline, "benchmark", side_effect=KeyboardInterrupt):
+                        self.assertEqual(baseline.main(), 130)
+            report = json.loads(Path(output).read_text(encoding="utf-8"))
+            self.assertEqual(report["status"], "interrupted")
+            self.assertNotIn("summary", report)
+
     def test_prompt_is_not_first_generated_token(self):
         timer = TokenTimer()
         with patch("bench.baseline.time.perf_counter", side_effect=[12.0, 12.5]):

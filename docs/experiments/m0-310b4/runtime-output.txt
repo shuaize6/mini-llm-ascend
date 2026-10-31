@@ -1,0 +1,24 @@
+报告已保存：results/qwen3-npu.json
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/qwen3-npu.json
+开始离线加载 tokenizer 和 Qwen3；首次搬运可能较慢。
+报告已保存：results/qwen3-npu.json
+模型已加载：21 个输入 token；开始预热。
+[W compiler_depend.ts:51] Warning: CAUTION: The operator 'aten::isin.Tensor_Tensor_out' is not currently supported on the NPU backend and will fall back to run on the CPU. This may have performance implications. (function npu_cpu_fallback)
+[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+../root/mini-llm-m0-venv/lib/python3.9/site-packages/transformers/generation/logits_process.py:150: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores_processed = torch.where(eos_token_mask, -math.inf, scores)
+.[W compiler_depend.ts:80] Warning: The oprator of add is executed, Currently High Accuracy but Low Performance OP with 64-bit has been used, Please Do Some Cast at Python Functions with 32-bit for Better Performance! (function operator())
+......报告已保存：results/qwen3-npu.json
+报告已保存：results/qwen3-npu.json
+样本 1：8 tokens，TTFT 145.0 ms，6.48 token/s
+报告已保存：results/qwen3-npu.json
+报告已保存：results/qwen3-npu.json
+样本 2：8 tokens，TTFT 165.3 ms，6.37 token/s
+报告已保存：results/qwen3-npu.json
+报告已保存：results/qwen3-npu.json
+样本 3：8 tokens，TTFT 153.1 ms，6.73 token/s
+生成文本：
+KV缓存是一种用于存储和检索
+报告已保存：results/qwen3-npu.json

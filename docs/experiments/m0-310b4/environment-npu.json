@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "environment": {
+    "recorded_at_utc": "2026-10-31T02:31:42.422440+00:00",
+    "python": "3.9.2 | packaged by conda-forge | (default, Feb 21 2021, 05:02:26) \n[GCC 9.3.0]",
+    "executable": "/root/mini-llm-m0-venv/bin/python",
+    "platform": "Linux-5.10.0+-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "packages": {
+      "torch": "2.1.0",
+      "torch-npu": "2.1.0.post2+git64bdab5",
+      "transformers": "4.51.3",
+      "safetensors": "0.7.0",
+      "numpy": "1.22.4",
+      "tokenizers": "0.21.4",
+      "huggingface-hub": "0.30.2",
+      "einops": "0.8.1"
+    },
+    "git_commit": {
+      "returncode": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "git_status": {
+      "returncode": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "deployed_commit": "8e9009c54a0ea9064a2a786594dba028ac51472c",
+    "benchmark_source_sha256": {
+      "bench/__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench/baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench/common.py": "0d3d217474943c42604f47d9b9166f355823e81647dbb425a4e2457361e24a94",
+      "bench/probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920"
+    }
+  },
+  "requested_device": "npu",
+  "ok": true,
+  "npu_smi": {
+    "returncode": 0,
+    "stdout": "+--------------------------------------------------------------------------------------------------------+\n| npu-smi 23.0.0                                   Version: 23.0.0                                       |\n+-------------------------------+-----------------+------------------------------------------------------+\n| NPU     Name                  | Health          | Power(W)     Temp(C)           Hugepages-Usage(page) |\n| Chip    Device                | Bus-Id          | AICore(%)    Memory-Usage(MB)                        |\n+===============================+=================+======================================================+\n| 0       310B4                 | Alarm           | 0.0          57                15    / 15            |\n| 0       0                     | NA              | 0            5632 / 15609                            |\n+===============================+=================+======================================================+",
+    "stderr": ""
+  },
+  "system_memory": {
+    "returncode": 0,
+    "stdout": "total        used        free      shared  buff/cache   available\nMem:           15609        1485        9979          62        4145       13808\nSwap:              0           0           0",
+    "stderr": ""
+  },
+  "cann_install_info": "package_name=Ascend-cann-toolkit\nversion=8.1.RC1\ninnerversion=V100R001C21SPC001B238\ncompatible_version=[V100R001C15],[V100R001C18],[V100R001C19],[V100R001C20],[V100R001C21]\narch=aarch64\nos=linux\npath=/usr/local/Ascend/ascend-toolkit/8.1.RC1/aarch64-linux\n",
+  "actual_device": "npu:0",
+  "dtype": "torch.float16",
+  "device_name": "Ascend310B4",
+  "smoke_tests": {
+    "matmul": {
+      "ok": true,
+      "shape": [
+        16,
+        24
+      ],
+      "finite": true,
+      "max_abs_error": 0.0070667266845703125,
+      "mean_ms": 0.09530539973638952,
+      "atol": 0.01,
+      "rtol": 0.01
+    },
+    "index_select": {
+      "ok": true,
+      "shape": [
+        4,
+        32
+      ],
+      "finite": true,
+      "max_abs_error": 0.0,
+      "mean_ms": 0.1596771995536983,
+      "atol": 0.01,
+      "rtol": 0.01
+    },
+    "softmax": {
+      "ok": true,
+      "shape": [
+        16,
+        32
+      ],
+      "finite": true,
+      "max_abs_error": 0.00011849403381347656,
+      "mean_ms": 0.11298080062260851,
+      "atol": 0.01,
+      "rtol": 0.01
+    },
+    "argmax": {
+      "ok": true,
+      "shape": [
+        16
+      ],
+      "finite": true,
+      "max_abs_error": 0.0,
+      "mean_ms": 0.20981540001230314,
+      "atol": 0.01,
+      "rtol": 0.01
+    }
+  }
+}
