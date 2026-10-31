@@ -43,6 +43,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 - [M1 运行与学习指南](docs/M1运行与学习指南.md)：进入/退出环境、启动自研生成、27 项测试、RoPE 探针与完整模型对拍。
 - [M1 代码设计与原理](docs/M1代码设计与原理.md)：现有实现的逐函数说明、Qwen3 数学、缓存状态、生成循环与对拍原理。
 - [M1 正确性与排错记录](docs/experiments/m1-310b4/README.md)：NPU 逐层零误差短案例、RoPE 精度修复、CPU 舍入控制组及原始报告。
+- [M1 预热后性能](docs/experiments/m1-310b4/预热后性能.md)：21-token 输入、8-token 输出，预热 1 次后测量 3 次，平均 7.41 token/s；包含 TTFT、TPOT、内存和分页缓存收益的证据边界。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。

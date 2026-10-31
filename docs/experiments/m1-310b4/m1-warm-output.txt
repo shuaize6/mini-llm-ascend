@@ -1,0 +1,21 @@
+报告已保存：results/m1-warm.json
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+../root/mini-llm-ascend/mini_llm_ascend/engine/sampler.py:23: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores[list(sorted(eos_ids))] = -float("inf")
+....报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+样本 1：TTFT 151.25 ms，TPOT 134.93049314287677 ms，7.299 token/s
+报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+样本 2：TTFT 134.26 ms，TPOT 133.0079867142818 ms，7.508 token/s
+报告已保存：results/m1-warm.json
+报告已保存：results/m1-warm.json
+样本 3：TTFT 134.25 ms，TPOT 134.6871949999695 ms，7.426 token/s
+KV缓存是一种用于存储和检索
+报告已保存：results/m1-warm.json

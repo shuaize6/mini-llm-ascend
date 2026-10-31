@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "stage": "complete",
+  "args": {
+    "model": "./models/Qwen3-0.6B",
+    "device": "npu",
+    "dtype": "float16",
+    "prompt": "请用一句话解释什么是KV缓存。",
+    "max_new_tokens": 8,
+    "capacity": 512,
+    "fixed_length": true,
+    "warmup": 1,
+    "runs": 3,
+    "output": "results/m1-warm.json"
+  },
+  "environment": {
+    "recorded_at_utc": "2026-10-31T09:46:47.029450+00:00",
+    "python": "3.9.2 | packaged by conda-forge | (default, Feb 21 2021, 05:02:26) \n[GCC 9.3.0]",
+    "executable": "/root/mini-llm-ascend/.venv/bin/python",
+    "platform": "Linux-5.10.0+-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "packages": {
+      "torch": "2.1.0",
+      "torch-npu": "2.1.0.post2+git64bdab5",
+      "transformers": "4.51.3",
+      "safetensors": "0.7.0",
+      "numpy": "1.22.4",
+      "tokenizers": "0.21.4",
+      "huggingface-hub": "0.30.2",
+      "einops": "0.8.1"
+    },
+    "compiler_environment": {
+      "MAX_COMPILE_CORE_NUMBER": "2",
+      "TE_PARALLEL_COMPILER": "2"
+    },
+    "git_commit": {
+      "returncode": 0,
+      "stdout": "ef3dad3e629fffe065c6d3969f87053cefe2fd1a",
+      "stderr": ""
+    },
+    "git_status": {
+      "returncode": 0,
+      "stdout": "?? fusion_result.json",
+      "stderr": ""
+    },
+    "deployed_commit": null,
+    "benchmark_source_sha256": {
+      "bench/__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench/baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench/common.py": "9fc7fb8234f7b40da9a398a2cfb974c7202944353fb3e4ba47cd0266aa9844c1",
+      "bench/compare_m1.py": "155bda750630e3e78ef7f9c92fa04f981c84f5832085ae3a8c3e1d8615c8b4d2",
+      "bench/m1.py": "798920196caada6d64b30426841f4a616d3f8c2bdf9119afc597c70615138a69",
+      "bench/m1_common.py": "72dfddc2de25a2afbfb2a17c056fd173df06a7b45b192962f0ef89a467d1dbb2",
+      "bench/probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920",
+      "bench/probe_m1_rope.py": "7228482b1273ada0da3da9bbb865e0d08842abdfca100d3c28ac376d47c3249b"
+    }
+  },
+  "timing_scope": "generate + host token observation; excludes model load, tokenize, input transfer, KV allocation, text decode",
+  "warmup_policy": "full independent requests; warmup samples excluded from summary",
+  "warnings": [
+    "Small samples do not establish P99 or long-context performance.",
+    "Preallocated KV is reused as storage; each request resets logical cache state."
+  ],
+  "provenance": {
+    "source_sha256": {
+      "mini_llm_ascend/__init__.py": "d57e82393a2d3a8daa522d7c998b9b53ac41c10a3ffb9c9c1506a2a1c7596f5b",
+      "mini_llm_ascend/cache/__init__.py": "4ad686cb46fd6a957a446c88a89223bed0d8182020640de3a630c66672988e77",
+      "mini_llm_ascend/cache/contiguous_kv.py": "cdd97c8135379e2e86acab42180dda5b988f727728038f057f503e2fd81d3562",
+      "mini_llm_ascend/engine/__init__.py": "816b0add364b9a31a9f0d780a949815080cbdc645b5b073965192b764a894d6c",
+      "mini_llm_ascend/engine/model.py": "dea71452deaeda0188a59fa5fd9c06cef9e6ae28bb3f68e6094a4b61e3f94464",
+      "mini_llm_ascend/engine/model_runner.py": "ee492d783e44f147533b4c8bb9fb3253904cdf7e4e3aa9b9b599e1e0e7f71d23",
+      "mini_llm_ascend/engine/sampler.py": "6c2e83e38cea0ba4291ce98b189cfbfbe5496ec9f29e562a3814a1c2d9707df0",
+      "mini_llm_ascend/engine/weights.py": "30b698c024eeb9b544261e429c62fd2cf6f570c71d4d1c20b94624d4cbf4c3ff",
+      "bench/__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench/baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench/common.py": "9fc7fb8234f7b40da9a398a2cfb974c7202944353fb3e4ba47cd0266aa9844c1",
+      "bench/compare_m1.py": "155bda750630e3e78ef7f9c92fa04f981c84f5832085ae3a8c3e1d8615c8b4d2",
+      "bench/m1.py": "798920196caada6d64b30426841f4a616d3f8c2bdf9119afc597c70615138a69",
+      "bench/m1_common.py": "72dfddc2de25a2afbfb2a17c056fd173df06a7b45b192962f0ef89a467d1dbb2",
+      "bench/probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920",
+      "bench/probe_m1_rope.py": "7228482b1273ada0da3da9bbb865e0d08842abdfca100d3c28ac376d47c3249b"
+    },
+    "model_files": {
+      "model.safetensors": {
+        "size_bytes": 1503300328,
+        "sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b"
+      },
+      "config.json": {
+        "size_bytes": 726,
+        "sha256": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd"
+      },
+      "generation_config.json": {
+        "size_bytes": 239,
+        "sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2"
+      },
+      "tokenizer.json": {
+        "size_bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      "tokenizer_config.json": {
+        "size_bytes": 9732,
+        "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101"
+      },
+      "vocab.json": {
+        "size_bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    },
+    "upstream_revision": "unknown-local-copy"
+  },
+  "input_ids": [
+    151644,
+    872,
+    198,
+    14880,
+    11622,
+    105321,
+    104136,
+    106582,
+    82707,
+    99982,
+    24360,
+    1773,
+    151645,
+    198,
+    151644,
+    77091,
+    198,
+    151667,
+    271,
+    151668,
+    271
+  ],
+  "rendered_prompt": "<|im_start|>user\n请用一句话解释什么是KV缓存。<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "eos_token_id": [
+    151645,
+    151643
+  ],
+  "device": "npu:0",
+  "dtype": "torch.float16",
+  "kv_capacity_bytes": 58720256,
+  "warmup_runs": [
+    {
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "metrics": {
+        "output_tokens": 8,
+        "generate_s": 69.25243498600003,
+        "ttft_ms": 24546.10149300015,
+        "tpot_ms": 6386.572147142878,
+        "itl_ms": [
+          18708.367838999948,
+          4326.954135000051,
+          4319.450055999823,
+          4294.0804940003545,
+          4380.2196749998075,
+          4369.1621490002035,
+          4307.770681999955
+        ],
+        "output_tokens_per_s": 0.11551940378150269,
+        "finalization_ms": 0.3284629997324373
+      }
+    }
+  ],
+  "runs": [
+    {
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "metrics": {
+        "output_tokens": 8,
+        "generate_s": 1.0960510299996713,
+        "ttft_ms": 151.2526789997537,
+        "tpot_ms": 134.93049314287677,
+        "itl_ms": [
+          127.48994799994762,
+          145.0046950003525,
+          143.8681159997941,
+          143.53250800013484,
+          125.18560199987405,
+          125.38481299998239,
+          134.04777000005197
+        ],
+        "output_tokens_per_s": 7.298930233204926,
+        "finalization_ms": 0.28489899978012545
+      },
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1300410368,
+        "memory_reserved_bytes": 1321205760,
+        "max_memory_allocated_bytes": 1301933568
+      }
+    },
+    {
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "metrics": {
+        "output_tokens": 8,
+        "generate_s": 1.0655903710003258,
+        "ttft_ms": 134.2592930000137,
+        "tpot_ms": 133.0079867142818,
+        "itl_ms": [
+          125.3311880000183,
+          149.2260250001891,
+          144.1059320000022,
+          125.89748800019152,
+          125.67148399966754,
+          131.078269000227,
+          129.74552099967696
+        ],
+        "output_tokens_per_s": 7.507575347635676,
+        "finalization_ms": 0.2751710003394692
+      },
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1300410368,
+        "memory_reserved_bytes": 1321205760,
+        "max_memory_allocated_bytes": 1301933568
+      }
+    },
+    {
+      "output_ids": [
+        82707,
+        99982,
+        24360,
+        101158,
+        100751,
+        105653,
+        33108,
+        116928
+      ],
+      "metrics": {
+        "output_tokens": 8,
+        "generate_s": 1.0773182030002317,
+        "ttft_ms": 134.24693900014972,
+        "tpot_ms": 134.6871949999695,
+        "itl_ms": [
+          127.75165899984131,
+          124.59967800032246,
+          156.24339499981943,
+          127.29900700014696,
+          149.53515499973946,
+          125.91284200016162,
+          131.4686289997553
+        ],
+        "output_tokens_per_s": 7.4258468646688955,
+        "finalization_ms": 0.260899000295467
+      },
+      "text": "KV缓存是一种用于存储和检索",
+      "memory": {
+        "memory_allocated_bytes": 1300410368,
+        "memory_reserved_bytes": 1321205760,
+        "max_memory_allocated_bytes": 1301933568
+      }
+    }
+  ],
+  "summary": {
+    "sample_count": 3,
+    "identical_output_ids": true,
+    "ttft_ms": {
+      "mean": 139.91963699997237,
+      "median": 134.2592930000137,
+      "min": 134.24693900014972,
+      "max": 151.2526789997537
+    },
+    "tpot_ms": {
+      "mean": 134.20855828570936,
+      "median": 134.6871949999695,
+      "min": 133.0079867142818,
+      "max": 134.93049314287677
+    },
+    "generate_s": {
+      "mean": 1.0796532013334097,
+      "median": 1.0773182030002317,
+      "min": 1.0655903710003258,
+      "max": 1.0960510299996713
+    },
+    "output_tokens_per_s": {
+      "mean": 7.410784148503166,
+      "median": 7.4258468646688955,
+      "min": 7.298930233204926,
+      "max": 7.507575347635676
+    }
+  }
+}
