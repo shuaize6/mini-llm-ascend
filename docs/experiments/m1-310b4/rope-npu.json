@@ -1,0 +1,504 @@
+{
+  "status": "ok",
+  "environment": {
+    "recorded_at_utc": "2026-10-31T09:05:41.735146+00:00",
+    "python": "3.9.2 | packaged by conda-forge | (default, Feb 21 2021, 05:02:26) \n[GCC 9.3.0]",
+    "executable": "/root/mini-llm-ascend/.venv/bin/python",
+    "platform": "Linux-5.10.0+-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "packages": {
+      "torch": "2.1.0",
+      "torch-npu": "2.1.0.post2+git64bdab5",
+      "transformers": "4.51.3",
+      "safetensors": "0.7.0",
+      "numpy": "1.22.4",
+      "tokenizers": "0.21.4",
+      "huggingface-hub": "0.30.2",
+      "einops": "0.8.1"
+    },
+    "compiler_environment": {
+      "MAX_COMPILE_CORE_NUMBER": "2",
+      "TE_PARALLEL_COMPILER": "2"
+    },
+    "git_commit": {
+      "returncode": 0,
+      "stdout": "b79bdd9a1df517eeffedc22532923d4a58463fd1",
+      "stderr": ""
+    },
+    "git_status": {
+      "returncode": 0,
+      "stdout": "?? fusion_result.json",
+      "stderr": ""
+    },
+    "deployed_commit": null,
+    "benchmark_source_sha256": {
+      "bench/__init__.py": "c6c27d2a6d241995b195662751466c763a760916c04f30ae23c5693b9d2804f9",
+      "bench/baseline.py": "55860c98fa07f64cc1b6810bfa75cccaf6a875d61b45afcdbb90cfd3a89dc28b",
+      "bench/common.py": "9fc7fb8234f7b40da9a398a2cfb974c7202944353fb3e4ba47cd0266aa9844c1",
+      "bench/compare_m1.py": "c86703bdd9232e963e7a3172e01803567920992d23bb35b432b3750dbbc0faf4",
+      "bench/m1.py": "fe98edd11958300f7314c66f59d3e11ddc10e7314d5a5cba445db84202ba73e3",
+      "bench/m1_common.py": "72dfddc2de25a2afbfb2a17c056fd173df06a7b45b192962f0ef89a467d1dbb2",
+      "bench/probe_env.py": "2451a83b36f3d1f79c8a9762eafa7f5b5a24a8afda5948c6a254d06cb860e920",
+      "bench/probe_m1_rope.py": "7228482b1273ada0da3da9bbb865e0d08842abdfca100d3c28ac376d47c3249b"
+    }
+  },
+  "cases": [
+    {
+      "positions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "comparisons": {
+        "current_cos": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 1.0,
+          "worst_reference": 1.0,
+          "failing_elements": 0
+        },
+        "current_sin": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.0,
+          "worst_reference": 0.0,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_cos": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 1.0,
+          "worst_reference": 1.0,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_sin": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.0,
+          "worst_reference": 0.0,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_cos": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 1.0,
+          "worst_reference": 1.0,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_sin": {
+          "shape": [
+            1,
+            21,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.0,
+          "worst_reference": 0.0,
+          "failing_elements": 0
+        }
+      }
+    },
+    {
+      "positions": [
+        21
+      ],
+      "comparisons": {
+        "current_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -0.5478515625,
+          "worst_reference": -0.5478515625,
+          "failing_elements": 0
+        },
+        "current_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.83642578125,
+          "worst_reference": 0.83642578125,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": false,
+          "max_abs": 3.814697265625e-06,
+          "mean_abs": 5.960464477539063e-08,
+          "max_relative": 0.0006064281333237886,
+          "mean_relative": 9.475439583184198e-06,
+          "worst_flat_index": 3,
+          "worst_actual": -0.00629425048828125,
+          "worst_reference": -0.006290435791015625,
+          "failing_elements": 2
+        },
+        "legacy_device_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.83642578125,
+          "worst_reference": 0.83642578125,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -0.5478515625,
+          "worst_reference": -0.5478515625,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.83642578125,
+          "worst_reference": 0.83642578125,
+          "failing_elements": 0
+        }
+      }
+    },
+    {
+      "positions": [
+        22
+      ],
+      "comparisons": {
+        "current_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -1.0,
+          "worst_reference": -1.0,
+          "failing_elements": 0
+        },
+        "current_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -0.00885009765625,
+          "worst_reference": -0.00885009765625,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -1.0,
+          "worst_reference": -1.0,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -0.00885009765625,
+          "worst_reference": -0.00885009765625,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -1.0,
+          "worst_reference": -1.0,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": -0.00885009765625,
+          "worst_reference": -0.00885009765625,
+          "failing_elements": 0
+        }
+      }
+    },
+    {
+      "positions": [
+        127
+      ],
+      "comparisons": {
+        "current_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.2322998046875,
+          "worst_reference": 0.2322998046875,
+          "failing_elements": 0
+        },
+        "current_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.97265625,
+          "worst_reference": 0.97265625,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.2322998046875,
+          "worst_reference": 0.2322998046875,
+          "failing_elements": 0
+        },
+        "legacy_device_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.97265625,
+          "worst_reference": 0.97265625,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_cos": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.2322998046875,
+          "worst_reference": 0.2322998046875,
+          "failing_elements": 0
+        },
+        "cpu_frequency_outer_sin": {
+          "shape": [
+            1,
+            1,
+            128
+          ],
+          "finite": true,
+          "passed": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "max_relative": 0.0,
+          "mean_relative": 0.0,
+          "worst_flat_index": 0,
+          "worst_actual": 0.97265625,
+          "worst_reference": 0.97265625,
+          "failing_elements": 0
+        }
+      }
+    }
+  ],
+  "passed": true
+}

@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：M0 环境探测与 HF 单请求基线已实现。** 包含中文学习说明、环境报告、小模型测试和离线基准脚本；自研推理引擎尚未实现。完整模型数值正确性将在 M1 对拍验证。
+> **当前状态：M0 基线与 M1 自研单请求前向已实现。** M1 包含 Qwen3 前向、连续 KV Cache、greedy 生成和 HF 对拍工具。27 项测试通过；Qwen3-0.6B 在 310B4 FP16 的 21-token 输入、4-token 输出案例中，逐层/全位置 logits、缓存重算和输出 IDs 均通过验证。分页缓存、调度器和服务尚未实现。
 
 ## 项目目标
 
@@ -28,8 +28,8 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
 | 方案 | 可行性评审、首版范围、学习路线 | 已整理 |
-| A | 环境探测、模型加载、HF 基线 | 已完成板端短请求初测，7 项测试通过 |
-| B | 手写前向、连续 KV、正确性对拍 | 待实现 |
+| A / M0 | 环境探测、模型加载、HF 基线 | 已完成板端短请求初测，7 项 M0 测试通过 |
+| B / M1 | 手写前向、连续 KV、正确性对拍 | 已实现；总计 27 项测试、CPU 与 NPU 短输入验证通过 |
 | C | 分页 KV、连续批处理、流式服务 | 待实现 |
 | D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
 | E | 性能报告与复现指南 | 待实验 |
@@ -40,7 +40,9 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 
 - [M0 环境探测与单请求基线](docs/M0环境与基线.md)：安装、运行、指标口径与代码阅读顺序。
 - [M0 代码设计与原理](docs/M0代码设计与原理.md)：逐函数说明、Prefill/Decode/KV Cache、张量形状、计时公式与 7 项测试解读。
-- [M1 代码设计与原理](docs/M1代码设计与原理.md)：待实现设计，讲解手写 Qwen3 前向、连续 KV 状态、生成循环与 HF 对拍方案。
+- [M1 运行与学习指南](docs/M1运行与学习指南.md)：进入/退出环境、启动自研生成、27 项测试、RoPE 探针与完整模型对拍。
+- [M1 代码设计与原理](docs/M1代码设计与原理.md)：现有实现的逐函数说明、Qwen3 数学、缓存状态、生成循环与对拍原理。
+- [M1 正确性与排错记录](docs/experiments/m1-310b4/README.md)：NPU 逐层零误差短案例、RoPE 精度修复、CPU 舍入控制组及原始报告。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
@@ -54,10 +56,10 @@ mini-llm-ascend/
 ├── .venv/            板端 Python 环境（不入库）
 ├── models/           模型权重（不入库）
 ├── results/          本地实验输出（不入库）
-├── mini_llm_ascend/   引擎、缓存、服务及算子绑定的预留目录
+├── mini_llm_ascend/   M1 前向、连续缓存与生成循环；服务/算子目录预留
 ├── ascendc/           自定义算子预留目录
-├── bench/            环境探测与 HF 单请求基线
-├── tests/            计时边界、固定长度与提前 EOS 测试
+├── bench/            环境探测、HF 基线、M1 生成与对拍
+├── tests/            M0 回归、模型数学、缓存状态、权重与生成测试
 ├── configs/          配置草案，暂非可运行配置
 ├── scripts/          板端部署辅助脚本
 └── docs/             设计、评审与学习路线
@@ -72,6 +74,12 @@ mini-llm-ascend/
 python -m bench.probe_env --device npu
 python -m bench.baseline --model ./models/Qwen3-0.6B --device npu \
   --max-new-tokens 1 --warmup 0 --runs 1
+
+# 自研 M1 单请求；先等待上一个命令结束，首次编译使用较小并行度
+export MAX_COMPILE_CORE_NUMBER=2
+export TE_PARALLEL_COMPILER=2
+python -m bench.m1 --model ./models/Qwen3-0.6B --device npu \
+  --max-new-tokens 8 --fixed-length
 ```
 
 暂不直接升级板载软件栈。目标模型是 Qwen3-0.6B，模型权重不进入 Git。按模型配置计算，FP16 KV 为 112 KiB/token，block_size=16 时为 1.75 MiB/块；容量规划还需考虑激活、临时张量和共享系统内存。

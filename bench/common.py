@@ -6,6 +6,7 @@
 import importlib.metadata
 import hashlib
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -40,6 +41,8 @@ def environment_info():
         "python": sys.version, "executable": sys.executable,
         "platform": platform.platform(), "machine": platform.machine(),
         "packages": versions,
+        "compiler_environment": {name: os.environ.get(name) for name in
+                                 ("MAX_COMPILE_CORE_NUMBER", "TE_PARALLEL_COMPILER")},
         "git_commit": command_result(["git", "-C", str(root), "rev-parse", "HEAD"]),
         "git_status": command_result(["git", "-C", str(root), "status", "--porcelain"]),
         "deployed_commit": deployed.read_text().strip() if deployed.is_file() else None,

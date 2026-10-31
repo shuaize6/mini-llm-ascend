@@ -1,0 +1,38 @@
+报告已保存：results/m1-npu.json
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/m1-npu.json
+hashing_model
+报告已保存：results/m1-npu.json
+loading_hf
+报告已保存：results/m1-npu.json
+hf_greedy
+[W compiler_depend.ts:51] Warning: CAUTION: The operator 'aten::isin.Tensor_Tensor_out' is not currently supported on the NPU backend and will fall back to run on the CPU. This may have performance implications. (function npu_cpu_fallback)
+[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+../root/mini-llm-ascend/.venv/lib/python3.9/site-packages/transformers/generation/logits_process.py:150: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores_processed = torch.where(eos_token_mask, -math.inf, scores)
+[W compiler_depend.ts:80] Warning: The oprator of add is executed, Currently High Accuracy but Low Performance OP with 64-bit has been used, Please Do Some Cast at Python Functions with 32-bit for Better Performance! (function operator())
+....报告已保存：results/m1-npu.json
+hf_teacher_forcing
+HF teacher forcing 1/4
+.........HF teacher forcing 2/4
+......................HF teacher forcing 3/4
+.........................HF teacher forcing 4/4
+报告已保存：results/m1-npu.json
+loading_m1
+报告已保存：results/m1-npu.json
+m1_teacher_forcing_0
+.报告已保存：results/m1-npu.json
+报告已保存：results/m1-npu.json
+m1_teacher_forcing_1
+报告已保存：results/m1-npu.json
+报告已保存：results/m1-npu.json
+m1_teacher_forcing_2
+..报告已保存：results/m1-npu.json
+报告已保存：results/m1-npu.json
+m1_teacher_forcing_3
+......报告已保存：results/m1-npu.json
+报告已保存：results/m1-npu.json
+m1_free_generation
+..报告已保存：results/m1-npu.json
+M1 对拍状态：ok

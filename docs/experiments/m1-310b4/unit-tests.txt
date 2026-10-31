@@ -1,0 +1,43 @@
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+test_finalization_does_not_inflate_decode_interval (test_baseline.TimingTests) ... ok
+test_interrupt_saves_diagnostic_report (test_baseline.TimingTests) ... ok
+test_no_tokens_and_bad_clock_are_errors (test_baseline.TimingTests) ... ok
+test_one_token_has_no_decode_interval (test_baseline.TimingTests) ... ok
+test_prompt_is_not_first_generated_token (test_baseline.TimingTests) ... ok
+Sliding Window Attention is enabled but not implemented for `eager`; unexpected results may be encountered.
+test_early_eos_counts_actual_tokens (test_baseline.TinyQwenIntegrationTests) ... ok
+test_streamer_matches_direct_generate_and_fixed_length (test_baseline.TinyQwenIntegrationTests) ... ok
+test_abort_requires_reset_and_old_values_are_invisible (test_contiguous_kv.CacheTests) ... ok
+test_bad_shape_dtype_and_unwritten_read (test_contiguous_kv.CacheTests) ... ok
+test_commit_once_and_exact_capacity (test_contiguous_kv.CacheTests) ... ok
+test_failed_model_forward_poisoned_cache (test_contiguous_kv.CacheTests) ... ok
+test_failure_and_interrupt_preserve_partial_results (test_m1_compare.ComparisonTests) ... 报告已保存：/tmp/tmpv51u4vch/interrupted.json
+报告已保存：/tmp/tmpv51u4vch/interrupted.json
+报告已保存：/tmp/tmpc4tj4g16/report.json
+报告已保存：/tmp/tmpc4tj4g16/report.json
+M1 对拍状态：error
+报告已保存：/tmp/tmpz901zd3j/report.json
+报告已保存：/tmp/tmpz901zd3j/report.json
+M1 对拍状态：interrupted
+ok
+test_nonfinite_and_shape_failure_are_json_serializable (test_m1_compare.ComparisonTests) ... ok
+test_stats_and_ranking_disagreement (test_m1_compare.ComparisonTests) ... ok
+test_fixed_generation_matches_hf_and_masks_eos (test_m1_generation.GenerationTests) ... ok
+test_one_token_and_early_eos_only_do_prefill (test_m1_generation.GenerationTests) ... ok
+test_reject_budget_and_nonfinite_logits (test_m1_generation.GenerationTests) ... ok
+test_second_request_and_callback_failure_reset_cache (test_m1_generation.GenerationTests) ... ok
+test_teacher_forcing_matches_hf_at_every_step (test_m1_generation.GenerationTests) ... ok
+test_all_position_logits_match_hf (test_model.ModelTests) ... ok
+test_cache_chunk_and_decode_match_full_recompute (test_model.ModelTests) ... ok
+test_causal_mask_includes_history (test_model.ModelTests) ... ok
+test_checkpoint_loader_strictness_and_tied_storage (test_model.ModelTests) ... ok
+test_reject_bad_input_and_unsupported_config (test_model.ModelTests) ... ok
+test_rmsnorm_has_no_mean_subtraction (test_model.ModelTests) ... ok
+test_rope_half_pairing_and_position_offset (test_model.ModelTests) ... ok
+test_rope_matches_hf_for_real_head_dim_and_decode_positions (test_model.ModelTests) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.997s
+
+OK
