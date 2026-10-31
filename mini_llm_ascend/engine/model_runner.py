@@ -6,9 +6,10 @@ from .sampler import greedy_select, normalize_eos
 
 
 class ModelRunner:
-    def __init__(self, model, capacity=512):
+    def __init__(self, model, capacity=512, *, cache=None):
         self.model = model.eval()
-        self.cache = model.new_cache(capacity)
+        # 注入 M2 请求缓存时，以 cache.capacity 为准；默认路径保持 M1 行为。
+        self.cache = model.new_cache(capacity) if cache is None else cache
 
     @torch.inference_mode()
     def generate(self, input_ids, max_new_tokens, *, eos_token_id=None, fixed_length=False, on_token=None):
