@@ -39,6 +39,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 ## 文档
 
 - [M0 环境探测与单请求基线](docs/M0环境与基线.md)：安装、运行、指标口径与代码阅读顺序。
+- [M0 代码设计与原理](docs/M0代码设计与原理.md)：逐函数说明、Prefill/Decode/KV Cache、张量形状、计时公式与 7 项测试解读。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
