@@ -56,3 +56,4 @@ Thumbs.db
 *.pem
 *.key
 .deployed_commit
+.migration-backup/

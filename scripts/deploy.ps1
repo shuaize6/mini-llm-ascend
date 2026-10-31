@@ -7,7 +7,7 @@ param(
     [switch]$Rsync,
     [switch]$Push,
     [string]$Board,
-    [string]$RemotePath = '/root/vllm_shengteng/'
+    [string]$RemotePath = '/root/mini-llm-ascend/'
 )
 
 $ErrorActionPreference = 'Stop'

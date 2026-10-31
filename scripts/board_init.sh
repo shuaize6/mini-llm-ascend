@@ -1,41 +1,33 @@
 #!/bin/bash
-# 在板子上初始化"部署仓库"：裸库 + post-receive 钩子自动 checkout 到工作目录
-# 用法（板子上执行一次）：bash scripts/board_init.sh
-set -e
+# 初始化标准项目目录：源码、.git、.venv、models、results 均位于同一根目录。
+# 用法：bash scripts/board_init.sh [/root/mini-llm-ascend]
+set -euo pipefail
 
-BARE=/root/vllm_shengteng.git
-WORK=/root/vllm_shengteng
-BRANCH=main
+WORK="${1:-/root/mini-llm-ascend}"
+case "$WORK" in
+    /*) ;;
+    *) echo '项目路径必须为绝对路径' >&2; exit 1 ;;
+esac
+mkdir -p "$WORK"
+WORK="$(cd "$WORK" && pwd -P)"
 
-echo "==> 创建裸库 $BARE"
-git init --bare "$BARE" >/dev/null
+if [ ! -e "$WORK/.git" ]; then
+    git init -b main "$WORK"
+fi
+if [ ! -d "$WORK/.git" ] || [ "$(git -C "$WORK" rev-parse --is-bare-repository)" != false ]; then
+    echo '需要 .git 位于项目内部的普通 Git 仓库' >&2
+    exit 1
+fi
+# 接收推送时由 Git 更新当前分支与工作副本；已跟踪文件有未提交改动时拒绝更新。
+git -C "$WORK" config receive.denyCurrentBranch updateInstead
+mkdir -p "$WORK/models" "$WORK/results"
 
-echo "==> 设置默认分支为 $BRANCH"
-git --git-dir="$BARE" symbolic-ref HEAD "refs/heads/$BRANCH"
+if [ ! -e "$WORK/.venv" ]; then
+    /usr/local/miniconda3/bin/python -m venv --system-site-packages "$WORK/.venv"
+fi
 
-echo "==> 安装 post-receive 钩子"
-cat > "$BARE/hooks/post-receive" <<'HOOK'
-#!/bin/bash
-set -e
-GIT_DIR=/root/vllm_shengteng.git
-WORK_TREE=/root/vllm_shengteng
-BRANCH=main
-
-mkdir -p "$WORK_TREE"
-git --git-dir="$GIT_DIR" --work-tree="$WORK_TREE" checkout -f "$BRANCH"
-COMMIT=$(git --git-dir="$GIT_DIR" rev-parse --short HEAD)
-echo "[deploy] 已部署 $COMMIT -> $WORK_TREE"
-
-# 记录最近一次部署，便于出问题时回滚
-git --git-dir="$GIT_DIR" rev-parse HEAD > "$WORK_TREE/.deployed_commit"
-HOOK
-
-chmod +x "$BARE/hooks/post-receive"
-
-echo "==> 准备模型目录"
-mkdir -p /root/models
-
-echo "==> 完成"
-echo "   裸库:   $BARE"
-echo "   工作区: $WORK （push 后自动更新）"
-echo "   模型:   /root/models/ （权重不进 git）"
+echo "项目目录：$WORK"
+echo "Git 数据：$WORK/.git"
+echo "Python：$WORK/.venv/bin/python"
+echo "模型：$WORK/models"
+echo '初始化完成；模型加载依赖按 requirements-m0.txt 安装。'

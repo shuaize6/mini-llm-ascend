@@ -1,7 +1,7 @@
 # Qwen3-0.6B 引擎配置（M0 阶段为规划值，实测后回填标 * 号项）
 model:
   name: Qwen3-0.6B
-  path: /root/models/Qwen3-0.6B
+  path: /root/mini-llm-ascend/models/Qwen3-0.6B
   dtype: float16            # checkpoint 为 bf16，加载时转换
   num_layers: 28
   hidden_size: 1024
