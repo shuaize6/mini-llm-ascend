@@ -52,7 +52,8 @@ def validate(model, ids, args, eos, torch):
     return result
 
 
-def measure_backend(name, model, ids, args, eos, torch, device, result, save, expected_ids=None):
+def measure_backend(name, model, ids, args, eos, torch, device, result, save, expected_ids=None,
+                    *, warmup=None, runs=None, pair_index=None):
     from mini_llm_ascend.cache.paged_kv import PagedKVPool
     from mini_llm_ascend.engine.model_runner import ModelRunner
     pool = None
@@ -64,7 +65,10 @@ def measure_backend(name, model, ids, args, eos, torch, device, result, save, ex
     else:
         runner = ModelRunner(model, args.capacity)
         result["kv_reserved_bytes"] = runner.cache.nbytes
-    result.update(warmup_runs=[], runs=[])
+    result.setdefault("warmup_runs", [])
+    result.setdefault("runs", [])
+    warmup = args.warmup if warmup is None else warmup
+    runs = args.runs if runs is None else runs
 
     def sample():
         nonlocal expected_ids
@@ -81,24 +85,31 @@ def measure_backend(name, model, ids, args, eos, torch, device, result, save, ex
         return run
 
     try:
-        for i in range(args.warmup):
+        for i in range(warmup):
             save("{}_warmup_{}".format(name, i + 1))
             result["warmup_runs"].append(sample())
             save("{}_warmup_{}_done".format(name, i + 1))
         if device.type == "npu":
             torch.npu.reset_peak_memory_stats()
-        for i in range(args.runs):
-            save("{}_run_{}".format(name, i + 1))
+        for _ in range(runs):
+            sample_index = len(result["runs"]) + 1
+            save("{}_run_{}".format(name, sample_index))
             run = sample()
+            run["pair_index"] = pair_index
             run["memory"] = memory_snapshot(torch, device)
             result["runs"].append(run)
-            save("{}_run_{}_done".format(name, i + 1))
-            print("{} 样本 {}：{:.3f} token/s".format(name, i + 1, run["metrics"]["output_tokens_per_s"]), flush=True)
+            save("{}_run_{}_done".format(name, sample_index))
+            print("{} 样本 {}：{:.3f} token/s".format(name, sample_index, run["metrics"]["output_tokens_per_s"]), flush=True)
         result["summary"] = {"sample_count": len(result["runs"]), "identical_output_ids": True}
         for key in ("ttft_ms", "tpot_ms", "generate_s", "output_tokens_per_s"):
             values = [r["metrics"][key] for r in result["runs"] if r["metrics"][key] is not None]
             result["summary"][key] = {"mean": statistics.mean(values) if values else None,
+                                      "median": statistics.median(values) if values else None,
+                                      "stdev": statistics.stdev(values) if len(values) > 1 else None,
                                       "min": min(values) if values else None, "max": max(values) if values else None}
+        total_seconds = sum(r["metrics"]["generate_s"] for r in result["runs"])
+        total_tokens = sum(len(r["output_ids"]) for r in result["runs"])
+        result["summary"]["aggregate_output_tokens_per_s"] = total_tokens / total_seconds if total_seconds else None
         result["output_ids"] = expected_ids
     finally:
         if pool is not None:
@@ -121,6 +132,8 @@ def parse_args():
     parser.add_argument("--max-new-tokens", type=int, default=8)
     parser.add_argument("--warmup", type=int, default=1)
     parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument("--order", choices=("sequential", "paired"), default="sequential",
+                        help="paired：先预热双方，再每轮交替 AB/BA；runs 是每个后端的样本数")
     parser.add_argument("--atol", type=float)
     parser.add_argument("--rtol", type=float)
     parser.add_argument("--output", default="results/m2.json")
@@ -138,7 +151,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    report = {"schema_version": 1, "status": "running", "stage": "setup", "args": vars(args),
+    report = {"schema_version": 2, "status": "running", "stage": "setup", "args": vars(args),
               "environment": environment_info(), "passed": False,
               "timing_scope": "generate + host observation; excludes load, tokenize, input transfer, initial KV pool allocation and statistics; includes request block allocation/release and gather",
               "backend_order": ["contiguous", "paged"],
@@ -170,15 +183,37 @@ def main():
             raise RuntimeError("M1/M2 数值对拍未通过，停止性能测量。")
         report["backends"] = {}
         expected = None
-        for name in report["backend_order"]:
+
+        def measure(name, **options):
+            nonlocal expected
             # 验证池和前一个后端不常驻，避免额外 KV 容量污染峰值统计。
             gc.collect()
             synchronize(torch, device)
             if device.type == "npu":
                 torch.npu.empty_cache()
-            report["backends"][name] = {}
+            result = report["backends"].setdefault(name, {})
             expected = measure_backend(name, model, ids, args, eos, torch, device,
-                                       report["backends"][name], save, expected)
+                                       result, save, expected, **options)
+
+        if args.order == "sequential":
+            for name in report["backend_order"]:
+                measure(name)
+        else:
+            # 每次切换仅保留一个后端的缓存。池创建在计时外，请求内分配/gather 仍计时。
+            report["order_policy"] = "Warm both backends, then alternate AB/BA pairs; recreate KV storage outside timing on each switch."
+            for name in report["backend_order"]:
+                measure(name, warmup=args.warmup, runs=0)
+            report["pairs"] = []
+            for index in range(args.runs):
+                order = report["backend_order"] if index % 2 == 0 else list(reversed(report["backend_order"]))
+                pair = {"pair_index": index + 1, "order": list(order)}
+                report["pairs"].append(pair)
+                for name in order:
+                    measure(name, warmup=0, runs=1, pair_index=index + 1)
+                rates = {name: report["backends"][name]["runs"][-1]["metrics"]["output_tokens_per_s"]
+                         for name in order}
+                pair["paged_vs_contiguous_percent"] = (rates["paged"] / rates["contiguous"] - 1) * 100
+                save("pair_{}_complete".format(index + 1))
         report.update(status="ok", stage="complete", passed=True,
                       text=tokenizer.decode(expected, skip_special_tokens=True))
         print(report["text"], flush=True)
