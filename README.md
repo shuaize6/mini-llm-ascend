@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：M0～M3 已实现。** M3 增加请求调度与打包连续批处理，通过 6 项 CPU 定向测试及 310B4 短批次验收；动态加入、补位后的输出与单请求参考一致。M3 尚未测量吞吐收益；已有 M2 单请求对照为连续 KV 7.28 token/s、分页 gather 7.07 token/s。HTTP 服务与原生分页 attention kernel 尚未实现。
+> **当前状态：M0～M3 已实现。** M3 通过 6 项 CPU 定向测试及 310B4 短批次验收。双请求小规模性能对照中，批次 2 总吞吐 10.74 token/s，串行控制组 6.85 token/s，提升约 56.7%，但单请求 TPOT 增加；负载为相同 21-token 输入、各输出 8 token、预热后各测 3 轮。HTTP 服务与原生分页 attention kernel 尚未实现。
 
 ## 项目目标
 
@@ -53,6 +53,7 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 - [M3 代码设计与原理](docs/M3代码设计与原理.md)：变长 token 打包、注意力隔离、FIFO 准入和取消回收。
 - [M3 运行与学习指南](docs/M3运行与学习指南.md)：环境进入/退出、必要测试、调度器调用示例。
 - [M3 短批次验收](docs/experiments/m3-310b4/README.md)：批量 logits 对拍、动态加入补位与原始结果。
+- [M3 缓存与性能对照](docs/experiments/m3-performance-310b4/README.md)：跨进程算子缓存探针、总吞吐与逐请求 TTFT/TPOT。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。

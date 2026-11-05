@@ -1,0 +1,59 @@
+/usr/local/miniconda3/lib/python3.9/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was not compiled with torchair.
+  warnings.warn(
+报告已保存：results/m3-performance.json
+loading
+报告已保存：results/m3-performance.json
+serial_warmup_1
+.....[W compiler_depend.ts:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy64 (function operator())
+........................../root/mini-llm-ascend/mini_llm_ascend/engine/sampler.py:23: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10 release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered internally at build/CMakeFiles/torch_npu.dir/compiler_depend.ts:74.)
+  scores[list(sorted(eos_ids))] = -float("inf")
+............................................................serial warmups 0.01735141744919271
+报告已保存：results/m3-performance.json
+serial_warmup_done
+报告已保存：results/m3-performance.json
+serial_warmup_2
+serial warmups 6.890768257787656
+报告已保存：results/m3-performance.json
+serial_warmup_done
+报告已保存：results/m3-performance.json
+batched_warmup_1
+......................................batched warmups 0.04270626498401367
+报告已保存：results/m3-performance.json
+batched_warmup_done
+报告已保存：results/m3-performance.json
+batched_warmup_2
+batched warmups 10.810089339605161
+报告已保存：results/m3-performance.json
+batched_warmup_done
+报告已保存：results/m3-performance.json
+serial_run_1
+serial runs 6.799925246552341
+报告已保存：results/m3-performance.json
+serial_run_done
+报告已保存：results/m3-performance.json
+batched_run_1
+batched runs 10.69071748113199
+报告已保存：results/m3-performance.json
+batched_run_done
+报告已保存：results/m3-performance.json
+batched_run_2
+batched runs 10.947159179927267
+报告已保存：results/m3-performance.json
+batched_run_done
+报告已保存：results/m3-performance.json
+serial_run_2
+serial runs 6.928561829112471
+报告已保存：results/m3-performance.json
+serial_run_done
+报告已保存：results/m3-performance.json
+serial_run_3
+serial runs 6.83526021682704
+报告已保存：results/m3-performance.json
+serial_run_done
+报告已保存：results/m3-performance.json
+batched_run_3
+batched runs 10.594654096457331
+报告已保存：results/m3-performance.json
+batched_run_done
+报告已保存：results/m3-performance.json
+complete
