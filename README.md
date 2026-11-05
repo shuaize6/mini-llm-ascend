@@ -4,7 +4,7 @@
 
 An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, continuous batching, and profiling.
 
-> **当前状态：M0 基线、M1 前向与 M2 共享分页 KV 已实现。** M2 通过 7 项新增针对性测试及 310B4 短输入对拍；后续 32-token 输出、20 对交替测量中，连续 KV 平均 7.28 token/s、分页 gather 平均 7.07 token/s，分页低约 2.91%，没有单请求加速证据。调度器、服务和原生分页 attention kernel 尚未实现。
+> **当前状态：M0～M3 已实现。** M3 增加请求调度与打包连续批处理，通过 6 项 CPU 定向测试及 310B4 短批次验收；动态加入、补位后的输出与单请求参考一致。M3 尚未测量吞吐收益；已有 M2 单请求对照为连续 KV 7.28 token/s、分页 gather 7.07 token/s。HTTP 服务与原生分页 attention kernel 尚未实现。
 
 ## 项目目标
 
@@ -31,7 +31,8 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 | A / M0 | 环境探测、模型加载、HF 基线 | 已完成板端短请求初测，7 项 M0 测试通过 |
 | B / M1 | 手写前向、连续 KV、正确性对拍 | 已实现；该阶段累计 27 项测试、CPU 与 NPU 短输入验证通过 |
 | C / M2 | 共享分页 KV、块管理、gather 参考注意力 | 已实现；新增 7 项测试与一次板端数值/性能对照通过 |
-| C / 后续 | 连续批处理、流式服务 | 待实现 |
+| C / M3 | 请求调度、连续批处理、取消回收 | 已实现；6 项 CPU 定向测试与一次板端短批次验收通过 |
+| C / 后续 | HTTP 流式服务、服务端背压 | 待实现 |
 | D | Chunked Prefill、Prefix Caching、热点优化 | 后续阶段 |
 | E | 性能报告与复现指南 | 已有短请求记录；长上下文与并发待实验 |
 
@@ -49,6 +50,9 @@ An educational LLM inference engine for Ascend NPUs, exploring paged KV cache, c
 - [M2 运行与学习指南](docs/M2运行与学习指南.md)：B=4 小例子、7 项针对性测试及一次板端验证命令。
 - [M2 验证与性能](docs/experiments/m2-310b4/README.md)：不连续块对拍、同进程 M1/M2 比较、块复用与实际预留内存的区别。
 - [M2 扩大样本吞吐](docs/experiments/m2-310b4/扩大样本吞吐.md)：32-token 输出、20 对交替测量、波动范围及首次编译成本。
+- [M3 代码设计与原理](docs/M3代码设计与原理.md)：变长 token 打包、注意力隔离、FIFO 准入和取消回收。
+- [M3 运行与学习指南](docs/M3运行与学习指南.md)：环境进入/退出、必要测试、调度器调用示例。
+- [M3 短批次验收](docs/experiments/m3-310b4/README.md)：批量 logits 对拍、动态加入补位与原始结果。
 - [目录与部署](docs/目录与部署.md)：统一的板端目录、环境激活及 Git 推送方式。
 - [310B4 初测与原始报告](docs/experiments/m0-310b4/README.md)：21-token 输入、8-token 输出，预热后 3 轮平均 TTFT 154.45 ms、吞吐 6.53 token/s；含 CPU 回退与数值警告，完整精度待对拍。
 - [可行性评估与学习路线](docs/可行性评估与学习路线.md)：优先阅读，包含设计勘误、验收关卡与学习约定。
